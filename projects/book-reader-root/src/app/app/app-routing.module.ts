@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,14 @@ const routes: Routes = [
     path:"",
     pathMatch:"full",
     redirectTo:"list"
+  },{
+    /**
+     * 404页
+     * 如果未匹配任何页面
+     * 则跳转至此
+     */
+    path:"**",
+    component:PageNotFoundComponent
   }
 ];
 

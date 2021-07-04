@@ -8,6 +8,12 @@
     "strict": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "indexed-db": [
+        "dist/indexed-db/indexed-db",
+        "dist/indexed-db"
+      ]
+    },
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,

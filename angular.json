@@ -109,6 +109,37 @@
           }
         }
       }
+    },
+    "indexed-db": {
+      "projectType": "library",
+      "root": "projects/indexed-db",
+      "sourceRoot": "projects/indexed-db/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/indexed-db/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/indexed-db/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/indexed-db/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/indexed-db/src/test.ts",
+            "tsConfig": "projects/indexed-db/tsconfig.spec.json",
+            "karmaConfig": "projects/indexed-db/karma.conf.js"
+          }
+        }
+      }
     }
   },
   "defaultProject": "book-reader-root"

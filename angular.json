@@ -27,12 +27,15 @@
             "tsConfig": "projects/book-reader-root/tsconfig.app.json",
             "assets": [
               "projects/book-reader-root/src/favicon.ico",
-              "projects/book-reader-root/src/assets"
+              "projects/book-reader-root/src/assets",
+              "projects/book-reader-root/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/book-reader-root/src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "serviceWorker": true,
+            "ngswConfigPath": "projects/book-reader-root/ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -94,7 +97,8 @@
             "karmaConfig": "projects/book-reader-root/karma.conf.js",
             "assets": [
               "projects/book-reader-root/src/favicon.ico",
-              "projects/book-reader-root/src/assets"
+              "projects/book-reader-root/src/assets",
+              "projects/book-reader-root/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/book-reader-root/src/styles.css"

@@ -1,27 +1,8 @@
-# BookReaderWeb
+# 网页小说阅读器 BookReaderWeb
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.1.
+## 此项目旨在创建一个可以只通过浏览器就可以进行txt小说阅读的单页应用
 
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## 功能列表
+- 支持读取本地txt小说源文件，进行拆分生成阅读目录，并支持基本的小说阅读功能
+- （支持添加书源，并支持搜索、添加、阅读网络小说）
+- （添加账号系统，支持本地书籍、书源、网络书籍的同步）

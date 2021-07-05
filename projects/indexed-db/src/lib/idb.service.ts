@@ -9,6 +9,28 @@ export class IDBService {
   private IDBFactory:IDBFactory = indexedDB
   constructor() { }
 
+  async includeIDB(dbName:string):Promise<boolean>{
+    const _this = this
+    return new Promise((resolve,reject)=>{
+      const openIDBRequest = _this.IDBFactory.open(dbName)
+      openIDBRequest.onupgradeneeded = function(){
+        resolve(false)
+      }
+      openIDBRequest.onsuccess = function(){
+        _this.idb = this.result
+        resolve(true)
+      }
+      openIDBRequest.onerror = function(event){
+        console.log(`Failed to open IDB[${dbName}]`)
+        reject(event)
+      }
+      openIDBRequest.onblocked = function(event){
+        console.log(`IDB[${dbName}] has been blocked`)
+        reject(event)
+      }
+    })
+  }
+
   async openIDB(dbName:string,version?:number):Promise<IDBDatabase>{
     const _this = this
     if(!!_this.idb)return Promise.resolve(_this.idb)

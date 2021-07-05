@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class IdbService {
+export class IDBService {
   private idb?:IDBDatabase
   private IDBFactory:IDBFactory = indexedDB
   constructor() { }

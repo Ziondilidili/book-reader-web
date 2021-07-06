@@ -20,6 +20,16 @@ export class BookService {
     this.idbService.openIDB(IDBName.books)
   }
 
+  async listBooks(): Promise<string[]> {
+    const bookDB = await this.idbService.openIDB(IDBName.books)
+    const stores = bookDB.objectStoreNames
+    const bookNames: string[] = []
+    for (let i = 0; i < stores.length; i++) {
+      bookNames.push(stores.item(i) as string)
+    }
+    return bookNames
+  }
+
   async createBook(bookName: string): Promise<void> {
     const idb = await this.idbService.upgradeIDB(IDBName.books)
     if (idb.objectStoreNames.contains(bookName)) {
@@ -44,14 +54,14 @@ export class BookService {
     chapters.forEach(chapter => store.put(chapter))
   }
 
-  async generateBookFromFile(file: File) {
+  async generateBookFromFile(bookName: string, file: File) {
     if (!file) return;
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.onload = async () => {
         const content = reader.result as string
         const chapters = this.txtResolver.spliteChapter(content)
-        this.addChapters(file.name, chapters).then(resolve)
+        this.addChapters(bookName, chapters).then(resolve)
       }
       /**
        * 选择最常用的中文文件编码 GB2312

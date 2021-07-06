@@ -35,6 +35,10 @@
 		{
 			"name": "相关服务",
 			"path": "..\\projects\\book-reader-root\\src\\app\\app\\services"
+		},
+		{
+			"name": "实体",
+			"path": "..\\projects\\book-reader-root\\src\\app\\app\\entity"
 		}
 	],
 	"settings": {}

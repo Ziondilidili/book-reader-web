@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,28 +7,6 @@ export class IDBService {
   private idb?:IDBDatabase
   private IDBFactory:IDBFactory = indexedDB
   constructor() { }
-
-  async includeIDB(dbName:string):Promise<boolean>{
-    const _this = this
-    return new Promise((resolve,reject)=>{
-      const openIDBRequest = _this.IDBFactory.open(dbName)
-      openIDBRequest.onupgradeneeded = function(){
-        resolve(false)
-      }
-      openIDBRequest.onsuccess = function(){
-        _this.idb = this.result
-        resolve(true)
-      }
-      openIDBRequest.onerror = function(event){
-        console.log(`Failed to open IDB[${dbName}]`)
-        reject(event)
-      }
-      openIDBRequest.onblocked = function(event){
-        console.log(`IDB[${dbName}] has been blocked`)
-        reject(event)
-      }
-    })
-  }
 
   async openIDB(dbName:string,version?:number):Promise<IDBDatabase>{
     const _this = this
@@ -41,11 +18,11 @@ export class IDBService {
         resolve(this.result)
       }
       openIDBRequest.onerror = function(event){
-        console.log(`Failed to open IDB[${dbName}]`)
+        console.log(`Failed to open IDB[${dbName}]`,event)
         reject(event)
       }
       openIDBRequest.onblocked = function(event){
-        console.log(`IDB[${dbName}] has been blocked`)
+        console.log(`IDB[${dbName}] has been blocked`,event)
         reject(event)
       }
     })
@@ -53,20 +30,25 @@ export class IDBService {
 
   async upgradeIDB(dbName:string):Promise<IDBDatabase>{
     const _this = this
-    if(!!this.idb)this.idb.close()
+    if(!!_this.idb){
+      _this.idb.close()
+      _this.idb = undefined
+    }
     return new Promise((resolve,reject)=>{
       const latestVersion = Date.now()
       const upgradeIDBRequest = _this.IDBFactory.open(dbName,latestVersion)
       upgradeIDBRequest.onupgradeneeded = function(event){
-        _this.idb = this.result
         resolve(this.result)
       }
+      upgradeIDBRequest.onsuccess = function(){
+        _this.idb = this.result
+      }
       upgradeIDBRequest.onerror = function(event){
-        console.log(`Failed to open IDB[${dbName}]`)
+        console.log(`Failed to open IDB[${dbName}]`,event)
         reject(event)
       }
       upgradeIDBRequest.onblocked = function(event){
-        console.log(`IDB[${dbName}] has been blocked`)
+        console.log(`IDB[${dbName}] has been blocked`,event)
         reject(event)
       }
     })

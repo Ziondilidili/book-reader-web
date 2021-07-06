@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Chapter } from '../entity/chapter';
 
 // const VolumnRegexp = /第[\d一二三四五六七八九十百千万亿]+卷 [^\s]*\s+/g
-const ChapterRegexp = /第[\d一二三四五六七八九十百千万亿]+章 [^\s]*\s+/g
+const ChapterRegexp = /第[\d一二三四五六七八九十百千万亿]+章\s*[^\s]*\s+/g
 
 @Injectable({
   providedIn: 'root'

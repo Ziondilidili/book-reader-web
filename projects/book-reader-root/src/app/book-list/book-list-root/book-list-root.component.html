@@ -1,1 +1,7 @@
-<p>book-list-root works!</p>
+<mat-card class="book-item">
+    <mat-icon>add</mat-icon>
+    <span>添加本地书籍</span>
+</mat-card>
+<mat-card class="book-item" *ngFor="let bookName of bookNameList">
+    {{bookName}}
+</mat-card>

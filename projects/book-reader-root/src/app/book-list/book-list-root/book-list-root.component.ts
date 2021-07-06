@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BookService } from '../../app/services/book.service';
 
 @Component({
   selector: 'book-reader-book-list-root',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./book-list-root.component.css']
 })
 export class BookListRootComponent implements OnInit {
-
-  constructor() { }
+  bookNameList:string[] = []
+  constructor(
+    private bookService:BookService
+  ) { }
 
   ngOnInit(): void {
+    this.bookService.listBooks()
+    .then(bookNameList=>this.bookNameList = bookNameList)
   }
 
 }

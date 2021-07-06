@@ -10,6 +10,8 @@ import { BookService } from '../../app/services/book.service';
 })
 export class BookReaderMainComponent implements OnInit {
   chapter?:Chapter
+  title:string = "loading"
+  paragraphs:string[] = []
   constructor(
     private bookService:BookService,
     private activatedRoute:ActivatedRoute,
@@ -26,6 +28,10 @@ export class BookReaderMainComponent implements OnInit {
       }
       this.bookService.getChapterWithTitle(bookName,title)
       .then(chapter=>{
+        if(!chapter){
+          this.router.navigate(["/page-not-found"])
+          return
+        }
         this.chapter = chapter
       })
     })

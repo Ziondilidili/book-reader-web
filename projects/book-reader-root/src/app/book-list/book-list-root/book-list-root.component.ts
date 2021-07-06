@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BookService } from '../../app/services/book.service';
 
 @Component({
@@ -15,6 +15,11 @@ export class BookListRootComponent implements OnInit {
   ngOnInit(): void {
     this.bookService.listBooks()
     .then(bookNameList=>this.bookNameList = bookNameList)
+  }
+
+  async getBookInfo(bookName:string){
+    const info = await this.bookService.getBookInfo(bookName)
+    console.log(info)
   }
 
 }

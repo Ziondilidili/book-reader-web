@@ -1,7 +1,6 @@
 <mat-card class="book-item">
-    <mat-icon>add</mat-icon>
-    <span>添加本地书籍</span>
+    <book-reader-txt-book-uploader (upload)="ngOnInit()"></book-reader-txt-book-uploader>
 </mat-card>
-<mat-card class="book-item" *ngFor="let bookName of bookNameList">
+<mat-card class="book-item" *ngFor="let bookName of bookNameList" (click)="getBookInfo(bookName)">
     {{bookName}}
 </mat-card>

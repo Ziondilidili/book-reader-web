@@ -7,7 +7,8 @@ export const environment = {
 };
 
 export const IDBName = {
-  books:"Books"
+  books:"Books",
+  bookInfo:"__info__"
 }
 
 

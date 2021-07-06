@@ -39,6 +39,10 @@
 		{
 			"name": "实体",
 			"path": "..\\projects\\book-reader-root\\src\\app\\app\\entity"
+		},
+		{
+			"name": "书籍阅读模块",
+			"path": "..\\projects\\book-reader-root\\src\\app\\book-reader"
 		}
 	],
 	"settings": {}

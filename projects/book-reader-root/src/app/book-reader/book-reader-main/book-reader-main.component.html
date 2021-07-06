@@ -1,3 +1,13 @@
-<span *ngIf="!!chapter">
-    {{chapter.content}}
+<span class="header" role="title">
+    {{title}}
 </span>
+<span class="content" role="content">
+    <!-- <span *ngFor="let paragraph of paragraphs">
+        {{paragraph}}
+    </span> -->
+    {{content}}
+</span>
+<span class="status-bar" role="status-bar">
+
+</span>
+<span role="chapter-list"></span>

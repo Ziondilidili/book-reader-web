@@ -11,6 +11,7 @@ import { BookService } from '../../app/services/book.service';
 export class BookReaderMainComponent implements OnInit {
   chapter?:Chapter
   title:string = "loading"
+  content:string = ""
   paragraphs:string[] = []
   constructor(
     private bookService:BookService,
@@ -32,9 +33,16 @@ export class BookReaderMainComponent implements OnInit {
           this.router.navigate(["/page-not-found"])
           return
         }
-        this.chapter = chapter
+        // this.chapter = chapter
+        this.resolveChapter(chapter)
       })
     })
+  }
+
+  resolveChapter(chapter:Chapter){
+    this.title = chapter.title
+    this.content = chapter.content.trim()
+    this.paragraphs = this.content.split(/[\f\n\r]+/g)
   }
 
   // getBookInfo(bookName:string){

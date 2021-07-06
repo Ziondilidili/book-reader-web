@@ -4,12 +4,8 @@ import { BookReaderMainComponent } from './book-reader-main/book-reader-main.com
 
 const routes: Routes = [
   {
-    path:"reading",
+    path:":bookName/:title",
     component:BookReaderMainComponent
-  },{
-    path:"",
-    pathMatch:"full",
-    redirectTo:"reading"
   }
 ];
 

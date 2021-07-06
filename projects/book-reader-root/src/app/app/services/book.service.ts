@@ -76,7 +76,7 @@ export class BookService {
     const store = idb.createObjectStore(bookName, {
       autoIncrement: true
     })
-    store.createIndex("title", "title", { unique: true })
+    store.createIndex(IDBName.bookKey, "title", { unique: true })
     this.initBookInfo(bookName)
   }
 
@@ -155,19 +155,19 @@ export class BookService {
   /**
    * 从书籍中加载某章
    * @param bookName 书籍名称
-   * @param chapterName 章节名称
+   * @param key 主键
    * @returns 章节对象
    */
-  async loadFromBook(bookName: string, chapterName: string): Promise<Chapter|BookInfo> {
+  private async loadFromBook<T extends Chapter|BookInfo>(bookName: string, key: IDBValidKey|IDBKeyRange): Promise<T> {
     return new Promise(async (resolve, reject) => {
       const store = await this.openBook(bookName)
-      const getRequest = store.get(chapterName)
+      const getRequest = store.get(key)
       getRequest.onerror = function (event) {
         console.log(`load from Book[${bookName}]`, event)
         reject(event)
       }
       getRequest.onsuccess = function (event) {
-        resolve(this.result as Chapter)
+        resolve(this.result as T)
       }
     })
   }
@@ -178,6 +178,27 @@ export class BookService {
    * @returns 书籍信息
    */
   async getBookInfo(bookName: string){
-    return this.loadFromBook(bookName, IDBName.bookInfo) as Promise<BookInfo>
+    return this.loadFromBook<BookInfo>(bookName, IDBName.bookInfo)
+  }
+
+  /**
+   * 获取指定章节
+   * @param bookName 书籍名称
+   * @param key 章节名称
+   * @returns 章节对象
+   */
+  async getChapterWithKey(bookName:string,key:IDBValidKey|IDBKeyRange){
+    return this.loadFromBook<Chapter>(bookName,key)
+  }
+
+  async getChapterWithTitle(bookName:string,title:string){
+    const store = await this.openBook(bookName)
+    return new Promise<Chapter>((resolve,reject)=>{
+      const getRequest = store.index(IDBName.bookKey).get(title)
+      getRequest.onerror = reject
+      getRequest.onsuccess = ev=>{
+        resolve(getRequest.result)
+      }
+    })
   }
 }

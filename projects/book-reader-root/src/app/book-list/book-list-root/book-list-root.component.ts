@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { Chapter } from '../../app/entity/chapter';
 import { BookService } from '../../app/services/book.service';
 
 @Component({
@@ -9,7 +11,8 @@ import { BookService } from '../../app/services/book.service';
 export class BookListRootComponent implements OnInit {
   bookNameList:string[] = []
   constructor(
-    private bookService:BookService
+    private bookService:BookService,
+    private router:Router 
   ) { }
 
   ngOnInit(): void {
@@ -19,7 +22,10 @@ export class BookListRootComponent implements OnInit {
 
   async getBookInfo(bookName:string){
     const info = await this.bookService.getBookInfo(bookName)
-    console.log(info)
+    const key = info.currentIndex
+    const chapter = await this.bookService.getChapterWithKey(bookName,key)
+    // console.log(chapter)
+    this.router.navigate(["/reading",bookName,chapter.title])
   }
 
 }

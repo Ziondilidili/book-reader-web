@@ -14,9 +14,26 @@ export class BookService {
      * 初始化数据库
      * 创建Book本地数据库
      */
-     this.idbService.includeIDB(IDBName.books)
-     .then(flag=>{
-       console.log(flag?"数据库已存在":"数据库不存在，但创建完毕")
-     }).catch(console.log)
+     this.idbService.openIDB(IDBName.books)
+  }
+
+  async createBook(bookName:string):Promise<void>{
+    const idb = await this.idbService.upgradeIDB(IDBName.books)
+    if(idb.objectStoreNames.contains(bookName)){
+      throw `Book[${bookName}] has been created`
+    }
+    const store = idb.createObjectStore(bookName,{
+      autoIncrement:true
+    })
+    store.createIndex("chapter","chapterName",{unique:false})
+  }
+
+  async openBook(bookName:string,mode?:IDBTransactionMode):Promise<IDBObjectStore>{
+    const idb = await this.idbService.openIDB(IDBName.books)
+    if(idb.objectStoreNames.contains(bookName)){
+      return idb.transaction(bookName,mode).objectStore(bookName)
+    }
+    await this.createBook(bookName)
+    return this.openBook(bookName,mode)
   }
 }

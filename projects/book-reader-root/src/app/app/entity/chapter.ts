@@ -1,11 +1,9 @@
 export class Chapter {
-    volumnName?:string
-    chapterName:string
+    title:string
     content:string
     length:number
-    constructor(chapterName:string,content:string,volumnName?:string){
-        this.volumnName = volumnName
-        this.chapterName = chapterName
+    constructor(title:string,content:string){
+        this.title = title
         this.content = content
         this.length = this.content?.length || 0
     }

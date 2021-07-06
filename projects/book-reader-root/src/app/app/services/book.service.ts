@@ -52,6 +52,22 @@ export class BookService {
   }
 
   /**
+   * 更新书籍信息
+   * @param bookName 书籍名称 
+   * @param bookInfo 书籍信息
+   * @returns 书籍信息索引
+   */
+  async updateBookInfo(bookName:string,bookInfo:BookInfo){
+    const idb = await this.idbService.openIDB(IDBName.books)
+    const store = idb.transaction(bookName, "readwrite").objectStore(bookName)
+    return new Promise((resolve,reject)=>{
+      const putRequest = store.put(bookInfo,IDBName.bookInfo)
+      putRequest.onerror = reject
+      putRequest.onsuccess = resolve
+    })
+  }
+
+  /**
    * 创建书籍，并自动初始化书籍信息
    * @param bookName 书籍名称
    */
@@ -69,7 +85,7 @@ export class BookService {
    * @param bookName 书籍名称
    * @returns 是否包含
    */
-  async includeBook(bookName:string):Promise<boolean>{
+  async includeBook(bookName: string): Promise<boolean> {
     const idb = await this.idbService.openIDB(IDBName.books)
     return idb.objectStoreNames.contains(bookName)
   }
@@ -82,7 +98,7 @@ export class BookService {
    */
   async openBook(bookName: string, mode?: IDBTransactionMode): Promise<IDBObjectStore> {
     const includeBookFlag = await this.includeBook(bookName)
-    if(!includeBookFlag)await this.createBook(bookName)
+    if (!includeBookFlag) await this.createBook(bookName)
     const idb = await this.idbService.openIDB(IDBName.books)
     return idb.transaction(bookName, mode).objectStore(bookName)
   }
@@ -94,7 +110,20 @@ export class BookService {
    */
   async addChapters(bookName: string, chapters: Chapter[]) {
     const store = await this.openBook(bookName, "readwrite")
-    chapters.forEach(chapter => store.put(chapter))
+    chapters.forEach(chapter=>store.put(chapter))
+    return new Promise(async (resolve,reject)=>{
+      const bookInfo = await this.getBookInfo(bookName)
+      const store = await this.openBook(bookName, "readwrite")
+      const countRequest = store.count()
+      countRequest.onerror = console.error
+      countRequest.onsuccess = ev=>{
+        const totalIndex = countRequest.result - 1
+        bookInfo.totalIndex = totalIndex
+        this.updateBookInfo(bookName,bookInfo)
+        .then(resolve)
+        .catch(reject)
+      }
+    })
   }
 
   /**
@@ -103,7 +132,7 @@ export class BookService {
    * @param file 书籍文件
    * @returns null
    */
-  async generateBookFromFile(bookName: string, file: File): Promise<void> {
+  async generateBookFromFile(bookName: string, file: File){
     if (!file) return;
     return new Promise(async (resolve, reject) => {
       const reader = new FileReader()
@@ -129,7 +158,7 @@ export class BookService {
    * @param chapterName 章节名称
    * @returns 章节对象
    */
-  async loadFromBook(bookName: string, chapterName: string): Promise<Chapter> {
+  async loadFromBook(bookName: string, chapterName: string): Promise<Chapter|BookInfo> {
     return new Promise(async (resolve, reject) => {
       const store = await this.openBook(bookName)
       const getRequest = store.get(chapterName)
@@ -148,7 +177,7 @@ export class BookService {
    * @param bookName 书籍名称 
    * @returns 书籍信息
    */
-  async getBookInfo(bookName: string) {
-    return this.loadFromBook(bookName, IDBName.bookInfo)
+  async getBookInfo(bookName: string){
+    return this.loadFromBook(bookName, IDBName.bookInfo) as Promise<BookInfo>
   }
 }

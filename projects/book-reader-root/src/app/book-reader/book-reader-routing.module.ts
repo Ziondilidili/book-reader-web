@@ -7,17 +7,17 @@ import { BookReaderStyleComponent } from './book-reader-style/book-reader-style.
 
 const routes: Routes = [
   {
-    path:":bookName/:title",
-    component:BookReaderMainComponent
-  },{
     path:"setting",
     component:BookReaderSettingComponent
   },{
     path:"style",
     component:BookReaderStyleComponent
   },{
-    path:"chapter-list",
+    path:":bookName/chapter-list",
     component:BookReaderChapterListComponent
+  },{
+    path:":bookName/:title",
+    component:BookReaderMainComponent
   }
 ];
 

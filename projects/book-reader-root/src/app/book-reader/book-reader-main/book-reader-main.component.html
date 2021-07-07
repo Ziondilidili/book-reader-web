@@ -1,13 +1,27 @@
-<span class="header" role="title">
-    {{title}}
+<!-- 顶栏 -->
+<span role="header-bar" class="header-bar" *ngIf="operable">
+    <mat-icon routerLink="/list">arrow_back_ios</mat-icon>
+    <span>
+        {{bookInfo?.name}}
+    </span>
 </span>
-<span class="content" role="content">
-    <!-- <span *ngFor="let paragraph of paragraphs">
+<!-- 内容区域 包含标题和正文 -->
+<span role="content-area" class="content-area" (click)="toggleOperability()">
+    <!-- 标题 -->
+    <span class="title" role="title">
+        {{title}}
+    </span>
+    <!-- 正文 -->
+    <span class="content" role="content">
+        <!-- <span *ngFor="let paragraph of paragraphs">
         {{paragraph}}
     </span> -->
-    {{content}}
+        {{content}}
+    </span>
 </span>
-<span class="status-bar" role="status-bar">
-
+<!-- 状态栏 -->
+<span class="status-bar" role="status-bar" *ngIf="operable">
+    <span>status-bar</span>
 </span>
-<span role="chapter-list"></span>
+<!-- 章节目录 -->
+<span role="chapter-list" *ngIf="operable"></span>

@@ -10,7 +10,7 @@ const routes: Routes = [
     path:"list",
     loadChildren:()=>import("projects/book-reader-root/src/app/book-list/book-list.module").then(m=>m.BookListModule)
   },{
-    path:"reading",
+    path:"reader",
     loadChildren:()=>import("projects/book-reader-root/src/app/book-reader/book-reader.module").then(m=>m.BookReaderModule)
   },{
     /**

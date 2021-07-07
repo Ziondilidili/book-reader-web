@@ -1,0 +1,19 @@
+:host{
+    display: flex;
+    flex-direction: column;
+}
+/* 标题 */
+.title{
+    display: block;
+    width: 100%;
+    font-size: xx-large;
+    margin-top: 20%;
+    margin-bottom: 10%;
+}
+/* 正文 */
+.content{
+    display: inline-block;
+    text-indent: 2em;
+    line-height: 1.5em;
+    font-size: x-large;
+}

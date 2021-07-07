@@ -12,10 +12,6 @@ import { BookService } from '../../app/services/book.service';
 export class BookReaderMainComponent implements OnInit {
   chapter?:Chapter
   bookInfo?:BookInfo
-  bookName:string = "loading"
-  title:string = "loading"
-  content:string = ""
-  // paragraphs:string[] = []
   operable:boolean = false
   constructor(
     private bookService:BookService,
@@ -60,10 +56,7 @@ export class BookReaderMainComponent implements OnInit {
 
   private resolveChapter(chapter:Chapter,bookInfo:BookInfo){
     this.chapter = chapter
-    this.title = chapter.title
-    this.content = chapter.content.trim()
     this.bookInfo = bookInfo
-    // this.paragraphs = this.content.split(/[\f\n\r]+/g)
   }
 
 }

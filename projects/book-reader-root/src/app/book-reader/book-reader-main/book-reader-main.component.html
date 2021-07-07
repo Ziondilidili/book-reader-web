@@ -1,19 +1,12 @@
-<!-- 顶栏 -->
-<span role="header-bar" class="header-bar" *ngIf="operable">
-    <mat-icon routerLink="/list">arrow_back_ios</mat-icon>
-    <span>
-        {{bookInfo?.name}}
-    </span>
-</span>
 <!-- 内容区域 包含标题和正文 -->
 <book-reader-book-reader-content-layer
-    class="content-area" 
+    class="content-layer" 
     [chapter]="chapter"
     (click)="toggleOperability()"
 ></book-reader-book-reader-content-layer>
-<!-- 状态栏 -->
-<span class="status-bar" role="status-bar" *ngIf="operable">
-    <span>status-bar</span>
-</span>
-<!-- 章节目录 -->
-<span role="chapter-list" *ngIf="operable"></span>
+<book-reader-book-reader-action-layer
+    class="action-layer"
+    [bookInfo]="bookInfo"
+    (cancel)="toggleOperability()"
+    [hidden]="!operable"
+></book-reader-book-reader-action-layer>

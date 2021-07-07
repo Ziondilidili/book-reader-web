@@ -4,28 +4,14 @@
     align-items: center;
     width: 100%;
 }
-
-/*****************可操作区域***********************/
-/* 顶栏 */
-.header-bar{
+/* 内容层 */
+.content-layer{
+    width: 80%;
+}
+/* 操作层 */
+.action-layer{
     position:fixed;
-    display: flex;
     top: 0;
     width: 100%;
     height: 6%;
-    /* background-color: black; */
-    opacity: 0.5;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    padding-left: 10%;
-}
-/* 状态栏 */
-.status-bar{
-
-}
-
-/* 内容区域 */
-.content-area{
-    width: 80%;
 }

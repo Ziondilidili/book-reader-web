@@ -139,7 +139,7 @@ export class BookService {
       reader.onload = async () => {
         const content = reader.result as string
         const chapters = this.txtResolver.spliteChapter(content)
-        console.log(chapters)
+        // console.log(chapters)
         this.addChapters(bookName, chapters)
           .then(resolve)
           .catch(reject)

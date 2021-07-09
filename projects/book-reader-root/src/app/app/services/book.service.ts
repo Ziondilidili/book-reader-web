@@ -201,4 +201,25 @@ export class BookService {
       }
     })
   }
+
+  /**
+   * 获取章节名称列表
+   * @param bookName 书籍名称
+   * @returns 章节名称列表
+   */
+  async getChapterNameList(bookName:string):Promise<string[]>{
+    const idb = await this.idbService.openIDB(bookName)
+    const store = idb.transaction(bookName).objectStore(bookName)
+    return new Promise((resolve,reject)=>{
+      const getAllKeysRequest = store.getAll()
+      getAllKeysRequest.onerror = reject
+      getAllKeysRequest.onsuccess = event=>{
+        const chapters = getAllKeysRequest.result
+        const chapterNameList = chapters
+          .map(chapter=>chapter.title)
+          .filter(chapterName=>chapterName!==IDBName.bookKey)
+        resolve(chapterNameList)
+      }
+    })
+  }
 }

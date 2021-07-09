@@ -1,1 +1,9 @@
-<p>book-reader-chapter-list works!</p>
+<cdk-virtual-scroll-viewport itemSize="48" class="chapter-list">
+    <mat-list>
+        <ng-container *cdkVirtualFor="let chapterName of chapterNameList">
+            <mat-list-item  class="chapter-item">
+                {{chapterName}}
+            </mat-list-item>
+        </ng-container>
+    </mat-list>
+</cdk-virtual-scroll-viewport>

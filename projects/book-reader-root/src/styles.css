@@ -2,3 +2,9 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* 不可选取的 */
+.unselectable{
+    cursor: default;
+    user-select: none;
+}

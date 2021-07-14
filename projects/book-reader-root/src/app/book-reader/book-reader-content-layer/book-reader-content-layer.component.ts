@@ -9,16 +9,16 @@ import { Chapter } from '../../app/entity/chapter';
 export class BookReaderContentLayerComponent implements OnInit {
   @Input("chapter")
   chapter?:Chapter
-  @Output("click")
-  onClickEmitter:EventEmitter<void> = new EventEmitter()
+  // @Output("click")
+  // onClickEmitter:EventEmitter<void> = new EventEmitter()
   constructor(
   ) { }
 
   ngOnInit(): void {
   }
 
-  @HostListener("click")
-  onClick(){
-    this.onClickEmitter.emit()
-  }
+  // @HostListener("click")
+  // onClick(){
+  //   this.onClickEmitter.emit()
+  // }
 }

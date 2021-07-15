@@ -77,7 +77,8 @@ export class BookService {
       autoIncrement: true
     })
     store.createIndex(IDBName.bookKey, "title", { unique: true })
-    this.initBookInfo(bookName)
+    await this.initBookInfo(bookName)
+    idb.close()
   }
 
   /**

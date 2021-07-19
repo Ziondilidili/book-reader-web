@@ -13,12 +13,15 @@ const {
   keys: IDBBookReaderBookKeys
 } = IDBBookReaderBook
 const NullFn = () => { }
+type BookCacheMap = {
+  [name:string]:Book
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
-
+  private bookCache:BookCacheMap = {}
   constructor(
     private idbService: IDBService
   ) {}
@@ -99,10 +102,12 @@ export class BookService {
   /** 更新书籍
    * @param book 书籍信息 
    */
-  async updateBook(book: Book): Promise<void> {
+  async updateBook(book: Book,bookName?:string): Promise<void> {
     const store = await this.openIDBBookReaderBookStore("readwrite")
-    const request = store.put(book)
-    return this.convertPromise<IDBValidKey, void>(request, NullFn)
+    const request = store.put(book,bookName)
+    await this.convertPromise<IDBValidKey, void>(request, NullFn)
+    if(!!bookName)delete this.bookCache[bookName]
+    this.bookCache[book.name] = book
   }
 
   /** 删除书籍
@@ -111,7 +116,8 @@ export class BookService {
   async deleteBook(bookName: string): Promise<void> {
     const store = await this.openIDBBookReaderBookStore("readwrite")
     const request = store.delete(bookName)
-    return this.convertPromise<undefined, void>(request, NullFn)
+    await this.convertPromise<undefined, void>(request, NullFn)
+    delete this.bookCache[bookName]
   }
 
   /** 打开书籍
@@ -121,6 +127,8 @@ export class BookService {
   async openBook(bookName: string): Promise<Book> {
     const store = await this.openIDBBookReaderBookStore()
     const request = store.get(bookName)
-    return this.convertPromise<any, Book>(request)
+    const book = await this.convertPromise<any, Book>(request)
+    if(!!book)this.bookCache[book.name] = book
+    return book
   }
 }

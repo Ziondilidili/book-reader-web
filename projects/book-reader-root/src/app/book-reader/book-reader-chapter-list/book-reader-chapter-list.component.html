@@ -1,7 +1,7 @@
 <cdk-virtual-scroll-viewport itemSize="48" class="chapter-list">
     <mat-list>
-        <ng-container *cdkVirtualFor="let chapterName of chapterNameList">
-            <mat-list-item  class="chapter-item">
+        <ng-container *cdkVirtualFor="let chapterName of chapterNameList;index as index">
+            <mat-list-item  class="chapter-item" (click)="navigateChapter(index)">
                 {{chapterName}}
             </mat-list-item>
         </ng-container>

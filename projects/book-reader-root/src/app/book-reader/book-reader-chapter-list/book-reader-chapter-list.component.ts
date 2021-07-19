@@ -9,6 +9,7 @@ import { BookService } from '../../app/services/book.service';
   styleUrls: ['./book-reader-chapter-list.component.css']
 })
 export class BookReaderChapterListComponent implements OnInit {
+  book?:Book
   chapterNameList:string[] = []
   constructor(
     private activatedRoute:ActivatedRoute,
@@ -24,7 +25,20 @@ export class BookReaderChapterListComponent implements OnInit {
         return
       }
       const book = await this.bookService.openBook(bookName)
+      if(!book){
+        this.router.navigate(["/"])
+        return
+      }
+      this.book = book
       this.chapterNameList = Book.getChapterNameList(book)
+    })
+  }
+  
+  navigateChapter(index:number){
+    if(!this.book)return;
+    this.book.chapterIndex = index
+    this.bookService.updateBook(this.book).then(()=>{
+      this.router.navigate(["/reader",this.book!.name])
     })
   }
 

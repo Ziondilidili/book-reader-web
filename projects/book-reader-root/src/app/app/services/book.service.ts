@@ -76,7 +76,7 @@ export class BookService {
     const store = idb.createObjectStore(bookName, {
       autoIncrement: true
     })
-    store.createIndex(IDBName.bookKey, "title", { unique: true })
+    store.createIndex(IDBName.bookKey, "name", { unique: true })
     await this.initBookInfo(bookName)
     idb.close()
   }
@@ -192,10 +192,10 @@ export class BookService {
     return this.loadFromBook<Chapter>(bookName,key)
   }
 
-  async getChapterWithTitle(bookName:string,title:string){
+  async getChapterWithName(bookName:string,name:string){
     const store = await this.openBook(bookName)
     return new Promise<Chapter>((resolve,reject)=>{
-      const getRequest = store.index(IDBName.bookKey).get(title)
+      const getRequest = store.index(IDBName.bookKey).get(name)
       getRequest.onerror = reject
       getRequest.onsuccess = ev=>{
         resolve(getRequest.result)
@@ -217,7 +217,7 @@ export class BookService {
       getAllKeysRequest.onsuccess = event=>{
         const chapters = getAllKeysRequest.result
         const chapterNameList = chapters
-          .map(chapter=>chapter.title)
+          .map(chapter=>chapter.name)
           .filter(chapterName=>chapterName!==IDBName.bookKey)
         resolve(chapterNameList)
       }

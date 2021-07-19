@@ -16,7 +16,7 @@ const routes: Routes = [
     path:":bookName/chapter-list",
     component:BookReaderChapterListComponent
   },{
-    path:":bookName/:title",
+    path:":bookName/:name",
     component:BookReaderMainComponent
   }
 ];

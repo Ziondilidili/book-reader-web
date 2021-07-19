@@ -25,7 +25,7 @@ export class BookListRootComponent implements OnInit {
     const key = info.currentIndex
     const chapter = await this.bookService.getChapterWithKey(bookName,key)
     // console.log(chapter)
-    this.router.navigate(["/reader",bookName,chapter.title])
+    this.router.navigate(["/reader",bookName,chapter.name])
   }
 
 }

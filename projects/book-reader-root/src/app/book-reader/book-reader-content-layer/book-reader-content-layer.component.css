@@ -3,7 +3,7 @@
     flex-direction: column;
 }
 /* 标题 */
-.title{
+.name{
     display: block;
     width: 100%;
     font-size: xx-large;

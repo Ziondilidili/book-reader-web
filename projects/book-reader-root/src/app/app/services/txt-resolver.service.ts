@@ -20,9 +20,9 @@ export class TxtResolverService {
     for(let i=0;i<matchs.length-1;i++){
       const match = matchs[i]
       const nextMatch = matchs[i+1]
-      const title = match[0].trim()
+      const name = match[0].trim()
       const content = originContent.slice(match.index+match[0].length,nextMatch.index)
-      const chapter = new Chapter(title,content)
+      const chapter = new Chapter(name,content)
       chapters.push(chapter)
     }
     return chapters

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BookInfo } from '../../app/entity/book-info';
+import { Book } from '../../app/entity/book';
 import { Chapter } from '../../app/entity/chapter';
 import { BookService } from '../../app/services/book.service';
 
@@ -11,7 +11,7 @@ import { BookService } from '../../app/services/book.service';
 })
 export class BookReaderMainComponent implements OnInit {
   chapter?:Chapter
-  bookInfo?:BookInfo
+  book?:Book
   operable:boolean = false
   constructor(
     private bookService:BookService,
@@ -29,18 +29,18 @@ export class BookReaderMainComponent implements OnInit {
   private async loadChapter(){
     this.activatedRoute.paramMap.subscribe(async paramMap=>{
       const bookName = paramMap.get("bookName") 
-      const name = paramMap.get("name")
-      if(!bookName||!name){
+      if(!bookName){
         this.router.navigate(["/list"])
         return
       }
-      const bookInfo = await this.bookService.getBookInfo(bookName)
-      const chapter = await this.bookService.getChapterWithName(bookName,name)
+      const book = await this.bookService.openBook(bookName)
+      const chapter = book.getCurrentChapter()
       if(!chapter){
         this.router.navigate(["/page-not-found"])
         return
       }
-      this.resolveChapter(chapter,bookInfo)
+      this.chapter = chapter
+      this.book = book
     })
   }
 
@@ -50,13 +50,4 @@ export class BookReaderMainComponent implements OnInit {
    toggleOperability(){
     this.operable = !this.operable
   }
-
-
-  /******************************************工具函数 临时使用**********************************************/
-
-  private resolveChapter(chapter:Chapter,bookInfo:BookInfo){
-    this.chapter = chapter
-    this.bookInfo = bookInfo
-  }
-
 }

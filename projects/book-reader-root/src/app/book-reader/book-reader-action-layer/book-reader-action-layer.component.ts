@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BookInfo } from '../../app/entity/book-info';
+import { Book } from '../../app/entity/book';
 
 @Component({
   selector: 'book-reader-book-reader-action-layer',
@@ -7,8 +7,8 @@ import { BookInfo } from '../../app/entity/book-info';
   styleUrls: ['./book-reader-action-layer.component.css']
 })
 export class BookReaderActionLayerComponent implements OnInit {
-  @Input("bookInfo")
-  bookInfo?:BookInfo
+  @Input("book")
+  book?:Book
   @Output("cancel")
   onCancelEmitter:EventEmitter<void> = new EventEmitter()
   constructor() { }

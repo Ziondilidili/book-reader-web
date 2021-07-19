@@ -13,11 +13,11 @@ const routes: Routes = [
     path:"style",
     component:BookReaderStyleComponent
   },{
+    path:":bookName",
+    component:BookReaderMainComponent
+  },{
     path:":bookName/chapter-list",
     component:BookReaderChapterListComponent
-  },{
-    path:":bookName/:name",
-    component:BookReaderMainComponent
   }
 ];
 

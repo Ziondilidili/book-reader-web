@@ -1,33 +1,16 @@
 import { Injectable } from '@angular/core';
 
+type IDBDatabaseMap = {
+  [name:string]:IDBDatabase
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class IDBService {
-  private idb?: IDBDatabase
+  private idb: IDBDatabaseMap = {}
   private IDBFactory: IDBFactory = indexedDB
   constructor() { }
-
-  // private bindEventListenderForIDB(idb: IDBDatabase) {
-  //   const _this = this
-  //   idb.onabort = function (event) {
-  //     console.log(`IDB has been aborted`, event)
-  //   }
-  //   idb.onclose = function (event) {
-  //     console.log(`IDB has been closed`, event)
-  //   }
-  //   idb.onerror = function (event) {
-  //     console.log(`IDB has errors`, event)
-  //   }
-  //   idb.onversionchange = function (event) {
-  //     console.log(`IDB start close`, event)
-  //     // if (!!_this.idb) {
-  //     //   _this.idb.close()
-  //     //   _this.idb = undefined
-  //     // }
-  //     idb.close()
-  //   }
-  // }
 
   /** 打开数据库
    * @param dbName 数据库名称 
@@ -36,13 +19,15 @@ export class IDBService {
    */
   async openIDB(dbName: string, version?: number): Promise<IDBDatabase> {
     const _this = this
-    if (!!_this.idb) return Promise.resolve(_this.idb)
+    if (!!_this.idb[dbName]) return Promise.resolve(_this.idb[dbName])
     return new Promise((resolve, reject) => {
       const openIDBRequest = _this.IDBFactory.open(dbName, version)
+      openIDBRequest.onupgradeneeded = function (event) {
+        // console.log("uncorrectly method of using IDB")
+      }
       openIDBRequest.onsuccess = function () {
-        _this.idb = this.result
-        // _this.bindEventListenderForIDB(_this.idb)
-        resolve(_this.idb)
+        _this.idb[dbName] = this.result
+        resolve(_this.idb[dbName])
       }
       openIDBRequest.onerror = function (event) {
         console.log(`Failed to open IDB[${dbName}]`, event)
@@ -61,20 +46,18 @@ export class IDBService {
    */
   async upgradeIDB(dbName: string): Promise<IDBDatabase> {
     const _this = this
-    if(!!_this.idb){
-      _this.idb.close()
-      _this.idb = undefined
+    if(!!_this.idb[dbName]){
+      _this.idb[dbName].close()
+      delete _this.idb[dbName]
     }
     return new Promise((resolve, reject) => {
       const latestVersion = Date.now()
       const upgradeIDBRequest = _this.IDBFactory.open(dbName, latestVersion)
       upgradeIDBRequest.onupgradeneeded = function (event) {
-        // _this.bindEventListenderForIDB(this.result)
-        // _this.idb = this.result
         resolve(this.result)
       }
       upgradeIDBRequest.onsuccess = function () {
-        _this.idb = this.result
+        _this.idb[dbName] = this.result
       }
       upgradeIDBRequest.onerror = function (event) {
         console.log(`Failed to open IDB[${dbName}]`, event)

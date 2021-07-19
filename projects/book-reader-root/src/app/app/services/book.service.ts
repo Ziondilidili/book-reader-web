@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { IDBService } from 'projects/indexed-db/src/public-api';
-import { TxtResolverService } from './txt-resolver.service';
 import { IDB } from "projects/book-reader-root/src/environments/environment"
 import { Book } from '../entity/book';
 
@@ -21,20 +20,13 @@ const NullFn = () => { }
 export class BookService {
 
   constructor(
-    private idbService: IDBService,
-    private txtResolver: TxtResolverService
-  ) { }
+    private idbService: IDBService
+  ) {}
 
   /** 打开BookReader数据库
    * @returns IDBDatabase
    */
   private async openIDBBookReader(): Promise<IDBDatabase> {
-    // const idb = await this.idbService.openIDB(IDBBookReaderName)
-    // if(idb.version > 1)return idb
-    // idb.close()
-    // const upgradedIDB = await this.upgradeIDBBookReader()
-    // upgradedIDB.close()
-    // return this.openIDBBookReader()
     return this.idbService.openIDB(IDBBookReaderName)
   }
 
@@ -53,10 +45,12 @@ export class BookService {
     if (idb.objectStoreNames.contains(IDBBookReaderBookName)) {
       return idb.transaction(IDBBookReaderBookName, mode).objectStore(IDBBookReaderBookName)
     }
+    // console.log(idb)
     const upgradeIdb = await this.upgradeIDBBookReader()
+    // console.log(upgradeIdb)
     const store = upgradeIdb.createObjectStore(IDBBookReaderBookName, { keyPath: IDBBookReaderBookPKey })
     // IDBBookReaderBookKeys.forEach(key=>store.createIndex(key.name,key.name,key.options))
-    upgradeIdb.close()
+    // upgradeIdb.close()
     return this.openIDBBookReaderBookStore(mode)
 
   }

@@ -1,9 +1,19 @@
 import { Injectable } from '@angular/core';
-import { IDBName } from 'projects/book-reader-root/src/environments/environment';
 import { IDBService } from 'projects/indexed-db/src/public-api';
-import { BookInfo } from '../entity/book-info';
-import { Chapter } from '../entity/chapter';
 import { TxtResolverService } from './txt-resolver.service';
+import { IDB } from "projects/book-reader-root/src/environments/environment"
+import { Book } from '../entity/book';
+
+const {
+  name:IDBBookReaderName,
+  Book:IDBBookReaderBook
+} = IDB.BookReader
+const {
+  name:IDBBookReaderBookName,
+  pkey:IDBBookReaderBookPKey,
+  keys:IDBBookReaderBookKeys
+} = IDBBookReaderBook
+const NullFn = ()=>{}
 
 @Injectable({
   providedIn: 'root'
@@ -16,211 +26,102 @@ export class BookService {
   ) {
     /**
      * 初始化数据库
-     * 创建Book本地数据库
      */
-    this.idbService.openIDB(IDBName.books)
+    this.idbService.openIDB(IDBBookReaderName).then(idb=>{
+      if(!idb.objectStoreNames.contains(IDBBookReaderBookName)){
+        this.idbService.upgradeIDB(IDBBookReaderName).then(idb=>{
+          const store = idb.createObjectStore(IDBBookReaderBookName,{keyPath:IDBBookReaderBookPKey})
+          // IDBBookReaderBookKeys.forEach(key=>store.createIndex(key.name,key.name,key.options))
+          idb.close()
+        })
+      }
+    })
   }
 
-  /**
-   * 获取所有书籍名称列表
+  /** 打开BookReader数据库
+   * @returns IDBDatabase
+   */
+  private async openIDBBookReader():Promise<IDBDatabase>{
+    return this.idbService.openIDB(IDBBookReaderName)
+  }
+  /** 更新BookReader数据库
+   * @returns IDBDatabase
+   */
+  private async upgradeIDBBookReader():Promise<IDBDatabase>{
+    return this.idbService.upgradeIDB(IDBBookReaderName)
+  }
+  /** 打开BookReader数据库Book数据文档
+   * @param mode 打开模式
+   * @returns 事务模式下IDBObjectStore套接字
+   */
+  private async openIDBBookReaderBookStore(mode?: IDBTransactionMode | undefined):Promise<IDBObjectStore>{
+    const idb = await this.openIDBBookReader()
+    return idb.transaction(IDBBookReaderBookName,mode).objectStore(IDBBookReaderBookName)
+  }
+
+  /** 将IDBRequest转换为Promise
+   * @param request IDBRequest
+   * @returns Promise
+   */
+  private async convertPromise<T=any,R=any>(
+    request:IDBRequest<T>,
+    convertor:(result:T)=>R = result => result as any
+  ){
+    return new Promise<R>((resolve,reject)=>{
+      request.onsuccess = function(ev){
+        const result = this.result
+        const convertedResult = convertor(result)
+        resolve(convertedResult)
+      }
+      request.onerror = function(ev){
+        reject(ev)
+      }
+    })
+  }
+
+  /** 列出书籍名称列表
    * @returns 书籍名称列表
    */
-  async listBooks(): Promise<string[]> {
-    const bookDB = await this.idbService.openIDB(IDBName.books)
-    const stores = bookDB.objectStoreNames
-    const bookNames: string[] = []
-    for (let i = 0; i < stores.length; i++) {
-      bookNames.push(stores.item(i) as string)
-    }
-    return bookNames
+  async listBookNames():Promise<string[]>{
+    const store = await this.openIDBBookReaderBookStore()
+    const getAllKeysRequest = store.getAllKeys()
+    return this.convertPromise(getAllKeysRequest,keys=>keys.map(toString))
   }
 
-  /**
-   * 初始化书籍信息
-   * @param bookName 书籍名称
-   * @returns 书籍信息
+  /** 创建书籍
+   * @param book 书籍信息
    */
-  private async initBookInfo(bookName: string) {
-    const idb = await this.idbService.openIDB(IDBName.books)
-    const store = idb.transaction(bookName, "readwrite").objectStore(bookName)
-    const bookInfo = new BookInfo(bookName)
-    return new Promise((resolve, reject) => {
-      const addRequest = store.add(bookInfo, IDBName.bookInfo)
-      addRequest.onerror = reject
-      addRequest.onsuccess = resolve
-    })
+  async createBook(book:Book):Promise<void>{
+    const store = await this.openIDBBookReaderBookStore("readwrite")
+    const request = store.add(book)
+    return this.convertPromise<IDBValidKey,void>(request,NullFn)
   }
 
-  /**
-   * 更新书籍信息
+  /** 更新书籍
+   * @param book 书籍信息 
+   */
+  async updateBook(book:Book):Promise<void>{
+    const store = await this.openIDBBookReaderBookStore("readwrite")
+    const request = store.put(book)
+    return this.convertPromise<IDBValidKey,void>(request,NullFn)
+  }
+
+  /** 删除书籍
+   * @param bookName 书籍名称
+   */
+  async deleteBook(bookName:string):Promise<void>{
+    const store = await this.openIDBBookReaderBookStore("readwrite")
+    const request = store.delete(bookName)
+    return this.convertPromise<undefined,void>(request,NullFn)
+  }
+
+  /** 打开书籍
    * @param bookName 书籍名称 
-   * @param bookInfo 书籍信息
-   * @returns 书籍信息索引
+   * @returns 书籍
    */
-  async updateBookInfo(bookName:string,bookInfo:BookInfo){
-    const idb = await this.idbService.openIDB(IDBName.books)
-    const store = idb.transaction(bookName, "readwrite").objectStore(bookName)
-    return new Promise((resolve,reject)=>{
-      const putRequest = store.put(bookInfo,IDBName.bookInfo)
-      putRequest.onerror = reject
-      putRequest.onsuccess = resolve
-    })
-  }
-
-  /**
-   * 创建书籍，并自动初始化书籍信息
-   * @param bookName 书籍名称
-   */
-  async createBook(bookName: string): Promise<void> {
-    const idb = await this.idbService.upgradeIDB(IDBName.books)
-    const store = idb.createObjectStore(bookName, {
-      autoIncrement: true
-    })
-    store.createIndex(IDBName.bookKey, "name", { unique: true })
-    await this.initBookInfo(bookName)
-    idb.close()
-  }
-
-  /**
-   * 判断是否包含某本书
-   * @param bookName 书籍名称
-   * @returns 是否包含
-   */
-  async includeBook(bookName: string): Promise<boolean> {
-    const idb = await this.idbService.openIDB(IDBName.books)
-    return idb.objectStoreNames.contains(bookName)
-  }
-
-  /**
-   * 以指定模式打开书籍事务
-   * @param bookName 书籍名称
-   * @param mode 模式 默认只读
-   * @returns 该书籍相关事务
-   */
-  async openBook(bookName: string, mode?: IDBTransactionMode): Promise<IDBObjectStore> {
-    const includeBookFlag = await this.includeBook(bookName)
-    if (!includeBookFlag) await this.createBook(bookName)
-    const idb = await this.idbService.openIDB(IDBName.books)
-    return idb.transaction(bookName, mode).objectStore(bookName)
-  }
-
-  /**
-   * 为某书籍添加/更新章
-   * @param bookName 书籍名称
-   * @param chapters 章数组
-   */
-  async addChapters(bookName: string, chapters: Chapter[]) {
-    const store = await this.openBook(bookName, "readwrite")
-    chapters.forEach(chapter=>store.put(chapter))
-    return new Promise(async (resolve,reject)=>{
-      const bookInfo = await this.getBookInfo(bookName)
-      const store = await this.openBook(bookName, "readwrite")
-      const countRequest = store.count()
-      countRequest.onerror = console.error
-      countRequest.onsuccess = ev=>{
-        const totalIndex = countRequest.result - 1
-        bookInfo.totalIndex = totalIndex
-        this.updateBookInfo(bookName,bookInfo)
-        .then(resolve)
-        .catch(reject)
-      }
-    })
-  }
-
-  /**
-   * 通过本地文件生成书籍
-   * @param bookName 书籍名称
-   * @param file 书籍文件
-   * @returns null
-   */
-  async generateBookFromFile(bookName: string, file: File){
-    if (!file) return;
-    return new Promise(async (resolve, reject) => {
-      const reader = new FileReader()
-      reader.onload = async () => {
-        const content = reader.result as string
-        const chapters = this.txtResolver.spliteChapter(content)
-        // console.log(chapters)
-        this.addChapters(bookName, chapters)
-          .then(resolve)
-          .catch(reject)
-      }
-      /**
-       * 选择最常用的中文文件编码 GB2312
-       * 后期考虑自动检测(自动检测会检测出JS不支持的字符编码格式，导致读取失败)
-       */
-      reader.readAsText(file, "GB2312")
-    })
-  }
-
-  /**
-   * 从书籍中加载某章
-   * @param bookName 书籍名称
-   * @param key 主键
-   * @returns 章节对象
-   */
-  private async loadFromBook<T extends Chapter|BookInfo>(bookName: string, key: IDBValidKey|IDBKeyRange): Promise<T> {
-    return new Promise(async (resolve, reject) => {
-      const store = await this.openBook(bookName)
-      const getRequest = store.get(key)
-      getRequest.onerror = function (event) {
-        console.log(`load from Book[${bookName}]`, event)
-        reject(event)
-      }
-      getRequest.onsuccess = function (event) {
-        resolve(this.result as T)
-      }
-    })
-  }
-
-  /**
-   * 获取书籍信息
-   * @param bookName 书籍名称 
-   * @returns 书籍信息
-   */
-  async getBookInfo(bookName: string){
-    return this.loadFromBook<BookInfo>(bookName, IDBName.bookInfo)
-  }
-
-  /**
-   * 获取指定章节
-   * @param bookName 书籍名称
-   * @param key 章节名称
-   * @returns 章节对象
-   */
-  async getChapterWithKey(bookName:string,key:IDBValidKey|IDBKeyRange){
-    return this.loadFromBook<Chapter>(bookName,key)
-  }
-
-  async getChapterWithName(bookName:string,name:string){
-    const store = await this.openBook(bookName)
-    return new Promise<Chapter>((resolve,reject)=>{
-      const getRequest = store.index(IDBName.bookKey).get(name)
-      getRequest.onerror = reject
-      getRequest.onsuccess = ev=>{
-        resolve(getRequest.result)
-      }
-    })
-  }
-
-  /**
-   * 获取章节名称列表
-   * @param bookName 书籍名称
-   * @returns 章节名称列表
-   */
-  async getChapterNameList(bookName:string):Promise<string[]>{
-    const idb = await this.idbService.openIDB(bookName)
-    const store = idb.transaction(bookName).objectStore(bookName)
-    return new Promise((resolve,reject)=>{
-      const getAllKeysRequest = store.getAll()
-      getAllKeysRequest.onerror = reject
-      getAllKeysRequest.onsuccess = event=>{
-        const chapters = getAllKeysRequest.result
-        const chapterNameList = chapters
-          .map(chapter=>chapter.name)
-          .filter(chapterName=>chapterName!==IDBName.bookKey)
-        resolve(chapterNameList)
-      }
-    })
+  async openBook(bookName:string):Promise<Book>{
+    const store = await this.openIDBBookReaderBookStore()
+    const request = store.get(bookName)
+    return this.convertPromise<any,Book>(request)
   }
 }

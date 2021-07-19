@@ -6,10 +6,22 @@ export const environment = {
   production: false
 };
 
-export const IDBName = {
-  books:"Books",
-  bookInfo:"__info__",
-  bookKey:"name"
+export const IDB = {
+  BookReader: {
+    name: "BookReader",
+    Book: {
+      name: "Book",
+      pkey: "name",
+      keys: [
+        /**
+         * {
+         *    name:"",
+         *    options:{}
+         * }
+         */
+      ]
+    }
+  }
 }
 
 

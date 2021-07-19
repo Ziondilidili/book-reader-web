@@ -95,6 +95,9 @@ export class BookService {
    */
   async createBook(book: Book): Promise<void> {
     const store = await this.openIDBBookReaderBookStore("readwrite")
+    const getAllKeysRequest = store.getAllKeys(book.name)
+    const bookNameList = await this.convertPromise<IDBValidKey[],string[]>(getAllKeysRequest)
+    if(bookNameList.includes(book.name))return;
     const request = store.add(book)
     return this.convertPromise<IDBValidKey, void>(request, NullFn)
   }

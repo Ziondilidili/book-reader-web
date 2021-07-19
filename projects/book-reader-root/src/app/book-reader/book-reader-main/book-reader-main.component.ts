@@ -30,11 +30,15 @@ export class BookReaderMainComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(async paramMap=>{
       const bookName = paramMap.get("bookName") 
       if(!bookName){
-        this.router.navigate(["/list"])
+        this.router.navigate(["/page-not-found"])
         return
       }
       const book = await this.bookService.openBook(bookName)
-      const chapter = book.getCurrentChapter()
+      if(!book){
+        this.router.navigate(["/page-not-found"])
+        return
+      }
+      const chapter = Book.getCurrentChapter(book)
       if(!chapter){
         this.router.navigate(["/page-not-found"])
         return

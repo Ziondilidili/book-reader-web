@@ -17,7 +17,10 @@ export class BookListRootComponent implements OnInit {
 
   ngOnInit(): void {
     this.bookService.listBookNames()
-    .then(bookNameList=>this.bookNameList = bookNameList)
+    .then(bookNameList=>{
+      // console.log(bookNameList)
+      this.bookNameList = bookNameList
+    })
   }
 
   async openBook(bookName:string){

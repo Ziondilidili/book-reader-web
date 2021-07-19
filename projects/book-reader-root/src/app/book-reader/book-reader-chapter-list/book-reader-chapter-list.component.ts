@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Book } from '../../app/entity/book';
 import { BookService } from '../../app/services/book.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { BookService } from '../../app/services/book.service';
   styleUrls: ['./book-reader-chapter-list.component.css']
 })
 export class BookReaderChapterListComponent implements OnInit {
-  chapterNameList?:string[] = []
+  chapterNameList:string[] = []
   constructor(
     private activatedRoute:ActivatedRoute,
     private bookService:BookService,
@@ -23,7 +24,7 @@ export class BookReaderChapterListComponent implements OnInit {
         return
       }
       const book = await this.bookService.openBook(bookName)
-      this.chapterNameList = book.getChapterNameList()
+      this.chapterNameList = Book.getChapterNameList(book)
     })
   }
 

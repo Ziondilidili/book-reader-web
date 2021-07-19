@@ -19,23 +19,22 @@ export class Book {
         this.description = description
         this.chapterIndex = chapterIndex
     }
-    getChapterWithName(name:string):Chapter|undefined{
-        return this.chapters.find(chapter=>chapter.name===name)
+    static getChapterWithName(book:Book,name:string):Chapter|undefined{
+        return book.chapters.find(chapter=>chapter.name===name)
     }
-    getChapterWithIndex(index:number):Chapter|undefined{
-        return this.chapters[index]
+    static getChapterWithIndex(book:Book,index:number):Chapter|undefined{
+        return book.chapters[index]
     }
-    getCurrentChapter():Chapter|undefined{
-        return this.getChapterWithIndex(this.chapterIndex)
+    static getCurrentChapter(book:Book):Chapter|undefined{
+        return Book.getChapterWithIndex(book,book.chapterIndex)
     }
-    getChapterNameList():string[]{
-        if(!!this.chapterNameList && this.chapterNameList.length>0)return this.chapterNameList;
+    static getChapterNameList(book:Book):string[]{
+        if(!!book.chapterNameList && book.chapterNameList.length>0)return book.chapterNameList;
         const nameList:string[] = []
-        this.chapters.forEach(chapter=>{
+        book.chapters.forEach(chapter=>{
             nameList.push(chapter.name)
         })
-        this.chapterNameList = nameList
+        book.chapterNameList = nameList
         return nameList
     }
-    
 }

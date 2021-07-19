@@ -29,6 +29,11 @@ export class IDBService {
   //   }
   // }
 
+  /** 打开数据库
+   * @param dbName 数据库名称 
+   * @param version 版本 
+   * @returns 数据库套接字
+   */
   async openIDB(dbName: string, version?: number): Promise<IDBDatabase> {
     const _this = this
     if (!!_this.idb) return Promise.resolve(_this.idb)
@@ -50,6 +55,10 @@ export class IDBService {
     })
   }
 
+  /** 升级数据库
+   * @param dbName 数据库名称 
+   * @returns 数据库套接字
+   */
   async upgradeIDB(dbName: string): Promise<IDBDatabase> {
     const _this = this
     if(!!_this.idb){
@@ -77,6 +86,5 @@ export class IDBService {
       }
     })
   }
-
 
 }

@@ -16,16 +16,12 @@ export class BookListRootComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.bookService.listBooks()
+    this.bookService.listBookNames()
     .then(bookNameList=>this.bookNameList = bookNameList)
   }
 
-  async getBookInfo(bookName:string){
-    const info = await this.bookService.getBookInfo(bookName)
-    const key = info.currentIndex
-    const chapter = await this.bookService.getChapterWithKey(bookName,key)
-    // console.log(chapter)
-    this.router.navigate(["/reader",bookName,chapter.name])
+  async openBook(bookName:string){
+    this.router.navigate(["/reader",bookName])
   }
 
 }

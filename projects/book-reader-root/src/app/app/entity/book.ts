@@ -5,23 +5,27 @@ export class Book {
     chapters:Chapter[] = []
     chapterNames?:string[]
     description?:string
+    chapterIndex:number
     constructor(
         name:string,
         chapters:Chapter[] = [],
         chapterNames?:string[],
-        description?:string
+        description?:string,
+        chapterIndex:number = 0
     ){
         this.name = name
         this.chapters = chapters
         this.chapterNames = chapterNames
         this.description = description
+        this.chapterIndex = chapterIndex
     }
-
-    update(){
-        
-    }
-
-    findChapter(name:string):Chapter|undefined{
+    findChapterWithName(name:string):Chapter|undefined{
         return this.chapters.find(chapter=>chapter.name===name)
+    }
+    findChapterWithIndex(index:number):Chapter|undefined{
+        return this.chapters[index]
+    }
+    findCurrentChapter():Chapter|undefined{
+        return this.findChapterWithIndex(this.chapterIndex)
     }
 }

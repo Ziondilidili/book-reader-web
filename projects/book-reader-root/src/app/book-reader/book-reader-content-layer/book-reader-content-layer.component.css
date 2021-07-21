@@ -16,5 +16,6 @@
     display: inline-block;
     text-indent: 2em;
     line-height: 1.5em;
-    font-size: x-large;
+    font-size: large;
+    white-space: pre-wrap;
 }

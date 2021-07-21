@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Book } from '../../app/entity/book';
 import { BookService } from '../../app/services/book.service';
@@ -10,13 +11,20 @@ import { BookService } from '../../app/services/book.service';
 })
 export class BookReaderChapterListComponent implements OnInit {
   book?:Book
-  chapterNameList:string[] = []
+  chapterNameItemSize:number = 48
+  @ViewChild(CdkVirtualScrollViewport) chapterListContainer!: CdkVirtualScrollViewport;
+  scrolled:boolean = false
   constructor(
     private activatedRoute:ActivatedRoute,
     private bookService:BookService,
-    private router:Router
+    private router:Router,
   ) { }
-
+  scrollCurrentChapter(){
+    if(this.scrolled || !this.book)return;
+    const offset = this.book?.chapterIndex * this.chapterNameItemSize
+    this.chapterListContainer.scrollToOffset(offset)
+    this.scrolled = true
+  }
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(async paramMap=>{
       const bookName = paramMap.get("bookName")
@@ -30,10 +38,9 @@ export class BookReaderChapterListComponent implements OnInit {
         return
       }
       this.book = book
-      this.chapterNameList = Book.getChapterNameList(book)
     })
   }
-  
+
   navigateChapter(index:number){
     if(!this.book)return;
     this.book.chapterIndex = index

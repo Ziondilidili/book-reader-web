@@ -6,3 +6,6 @@
 .chapter-item{
     height: 20px;
 }
+.chapter-current{
+    background-color: royalblue;
+}

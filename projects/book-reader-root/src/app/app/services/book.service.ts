@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { IDBService } from 'projects/indexed-db/src/public-api';
 import { IDB } from "projects/book-reader-root/src/environments/environment"
 import { Book } from '../entity/book';
+import { Chapter } from '../entity/chapter';
 
 const {
   name: IDBBookReaderName,
@@ -130,5 +131,17 @@ export class BookService {
     const book = await this.convertPromise<any, Book>(request)
     if(!!book)this.bookCache[book.name] = book
     return book
+  }
+
+  /** 更新章节
+   * @param book 章节所属书本 
+   * @param newChapter 更改后的章节
+   * @param chapterName 章节名称（可选）
+   */
+  async updateChapter(book:Book,newChapter:Chapter,chapterName:string = newChapter.name){
+    const oldChapterIndex = book.chapters.findIndex(chapter=>chapter.name === chapterName)
+    if(!oldChapterIndex)throw new Error(`book[${book.name}].chapter[${chapterName}] not found`)
+    book.chapters[oldChapterIndex] = newChapter
+    return this.updateBook(book)
   }
 }

@@ -6,7 +6,7 @@
 .name{
     display: block;
     width: 100%;
-    font-size: xx-large;
+    font-size:larger;
     line-height: 1.5em;
     margin-top: 20%;
     margin-bottom: 10%;
@@ -16,6 +16,6 @@
     display: inline-block;
     text-indent: 2em;
     line-height: 1.5em;
-    font-size: large;
+    font-size:small;
     white-space: pre-wrap;
 }

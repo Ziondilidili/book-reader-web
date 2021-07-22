@@ -4,6 +4,6 @@
     {{chapter?.name}}
 </span>
 <!-- 正文 -->
-<span class="content" role="content">
+<span #content class="content" role="content" (cdkObserveContent)="scrollToLastReadingLocation()">
     {{chapter?.content}}
 </span>

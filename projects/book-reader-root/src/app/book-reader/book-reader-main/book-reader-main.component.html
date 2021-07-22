@@ -2,6 +2,7 @@
 <book-reader-book-reader-content-layer
     class="content-layer" 
     [chapter]="chapter"
+    (close)="onContentLayerClosed($event)"
     (click)="toggleOperability()"
 ></book-reader-book-reader-content-layer>
 <book-reader-book-reader-action-layer

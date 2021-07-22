@@ -10,8 +10,8 @@ import { BookService } from '../../app/services/book.service';
   styleUrls: ['./book-reader-main.component.css']
 })
 export class BookReaderMainComponent implements OnInit {
-  chapter?:Chapter
-  book?:Book
+  chapter!:Chapter
+  book!:Book
   operable:boolean = false
   constructor(
     private bookService:BookService,
@@ -21,6 +21,10 @@ export class BookReaderMainComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadChapter()
+  }
+
+  async onContentLayerClosed(chapter:Chapter){
+    return this.bookService.updateChapter(this.book,chapter)
   }
 
   /**

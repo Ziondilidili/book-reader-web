@@ -53,3 +53,27 @@
     justify-content: center;
     align-items: center;
 }
+.switchPrevChapter{
+    position: fixed;
+    left: 0;
+    top: 6%;
+    width: 30%;
+    height: 84%;
+    background-color: cadetblue;
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.switchNExtChapter{
+    position: fixed;
+    right: 0;
+    top: 6%;
+    width: 30%;
+    height: 84%;
+    background-color: cadetblue;
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

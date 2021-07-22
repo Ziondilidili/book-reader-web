@@ -24,4 +24,12 @@
             <span>设置</span>
         </span>
     </span>
+    <!-- 上一页 -->
+    <span *ngIf="existsPrevChapter()" class="switchPrevChapter" (click)="onSwitchPrevChapter()">
+        <mat-icon>skip_previous</mat-icon>
+    </span>
+    <!-- 上一页 -->
+    <span *ngIf="existsNextChapter()" class="switchNExtChapter" (click)="onSwitchNextChapter()">
+        <mat-icon>skip_next</mat-icon>
+    </span>
 </span>

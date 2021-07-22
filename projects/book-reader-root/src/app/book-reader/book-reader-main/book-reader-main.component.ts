@@ -27,6 +27,20 @@ export class BookReaderMainComponent implements OnInit {
     return this.bookService.updateChapter(this.book,chapter)
   }
 
+  async onSwitchPrevChapter(){
+    if(this.book.chapterIndex<=0)return;
+    this.book.chapterIndex--
+    await this.bookService.updateBook(this.book)
+    this.chapter = this.book.chapters[this.book.chapterIndex]
+  }
+
+  async onSwitchNextChapter(){
+    if(this.book.chapterIndex>=this.book.chapters.length-1)return;
+    this.book.chapterIndex++
+    await this.bookService.updateBook(this.book)
+    this.chapter = this.book.chapters[this.book.chapterIndex]
+  }
+
   /**
    * 通过路由参数加载章节信息
    */

@@ -9,5 +9,7 @@
     class="action-layer"
     [book]="book"
     (cancel)="toggleOperability()"
-    [hidden]="!operable"
+    (switchPrevChapter)="onSwitchPrevChapter()"
+    (switchNextChapter)="onSwitchNextChapter()"
+    *ngIf="operable"
 ></book-reader-book-reader-action-layer>

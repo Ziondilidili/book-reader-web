@@ -42,7 +42,7 @@ export class BookReaderMainComponent implements OnInit {
         this.router.navigate(["/page-not-found"])
         return
       }
-      const chapter = Book.getCurrentChapter(book)
+      const chapter = book.chapters[book.chapterIndex]
       if(!chapter){
         this.router.navigate(["/page-not-found"])
         return

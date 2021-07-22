@@ -140,8 +140,9 @@ export class BookService {
    */
   async updateChapter(book:Book,newChapter:Chapter,chapterName:string = newChapter.name){
     const oldChapterIndex = book.chapters.findIndex(chapter=>chapter.name === chapterName)
-    if(!oldChapterIndex)throw new Error(`book[${book.name}].chapter[${chapterName}] not found`)
+    if(oldChapterIndex === -1)throw new Error(`book[${book.name}].chapter[${chapterName}] not found`)
     book.chapters[oldChapterIndex] = newChapter
+    book.chapterNameList[oldChapterIndex] = chapterName
     return this.updateBook(book)
   }
 }

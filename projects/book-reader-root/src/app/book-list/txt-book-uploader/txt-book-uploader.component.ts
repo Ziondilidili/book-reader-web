@@ -41,9 +41,7 @@ export class TxtBookUploaderComponent implements OnInit {
     const txtContent = await this.loadContentFromTxtFile(txtBookFile)
     if(!txtContent)return;
     const chapters = this.txtResolver.spliteChapter(txtContent)
-    const chapterNames:string[] = []
-    chapters.forEach(chapter=>chapterNames.push(chapter.name))
-    const book = new Book(bookName,chapters,chapterNames,fileName)
+    const book = new Book(bookName,chapters,fileName)
     await this.bookService.createBook(book)
     this.uploadEventEmitter.emit()
   }

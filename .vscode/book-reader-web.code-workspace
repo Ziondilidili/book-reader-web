@@ -1,0 +1,49 @@
+{
+	"folders": [
+		{
+			"name": "根目录",
+			"path": ".."
+		},
+		{
+			"name": "根项目",
+			"path": "..\\projects\\book-reader-root"
+		},
+		{
+			"name": "根模块",
+			"path": "..\\projects\\book-reader-root\\src\\app\\app"
+		},
+		{
+			"name": "Mterial模块",
+			"path": "..\\projects\\book-reader-root\\src\\app\\material"
+		},
+		{
+			"name": "书籍列表模块",
+			"path": "..\\projects\\book-reader-root\\src\\app\\book-list"
+		},
+		{
+			"name": "文档",
+			"path": "..\\docs"
+		},
+		{
+			"name": "IndexedDB库",
+			"path": "..\\projects\\indexed-db\\src"
+		},
+		{
+			"name": "环境变量",
+			"path": "..\\projects\\book-reader-root\\src\\environments"
+		},
+		{
+			"name": "相关服务",
+			"path": "..\\projects\\book-reader-root\\src\\app\\app\\services"
+		},
+		{
+			"name": "实体",
+			"path": "..\\projects\\book-reader-root\\src\\app\\app\\entity"
+		},
+		{
+			"name": "书籍阅读模块",
+			"path": "..\\projects\\book-reader-root\\src\\app\\book-reader"
+		}
+	],
+	"settings": {}
+}

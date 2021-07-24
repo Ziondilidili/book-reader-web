@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/book-reader-root",
+            "outputPath": "dist/book-reader-root/browser",
             "index": "projects/book-reader-root/src/index.html",
             "main": "projects/book-reader-root/src/main.ts",
             "polyfills": "projects/book-reader-root/src/polyfills.ts",
@@ -107,6 +107,64 @@
             ],
             "scripts": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/book-reader-root/server",
+            "main": "projects/book-reader-root/server.ts",
+            "tsConfig": "projects/book-reader-root/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "projects/book-reader-root/src/environments/environment.ts",
+                  "with": "projects/book-reader-root/src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "book-reader-root:build:development",
+              "serverTarget": "book-reader-root:server:development"
+            },
+            "production": {
+              "browserTarget": "book-reader-root:build:production",
+              "serverTarget": "book-reader-root:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "book-reader-root:build:production",
+              "serverTarget": "book-reader-root:server:production"
+            },
+            "development": {
+              "browserTarget": "book-reader-root:build:development",
+              "serverTarget": "book-reader-root:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     },

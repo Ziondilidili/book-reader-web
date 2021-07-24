@@ -1,0 +1,55 @@
+name: GenerateRelease
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  GenerateRelease:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup NodeJS@v14
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: npm
+      - name: Install Deps
+        run: npm install
+      - name: Build Project
+        run: npx ng build book-reader-root --prod
+      - name: Package Assets
+        run: |
+          cp -r ./dist/book-reader-root book-reader-web
+          zip -r book-reader-web.zip book-reader-web
+          tar -zcvf book-reader-web.tar.gz book-reader-web
+      - name: Generate PreRelease
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body:
+          draft: false
+          prerelease: true
+      - name: Upload Release Asset [.tar.gz]
+        id: upload-release-asset-tar-gz
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./book-reader-web.tar.gz
+          asset_name: book-reader-web.tar.gz
+          asset_content_type: application/zip
+      - name: Upload Release Asset [.zip]
+        id: upload-release-asset-zip
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./book-reader-web.zip
+          asset_name: book-reader-web.zip
+          asset_content_type: application/zip

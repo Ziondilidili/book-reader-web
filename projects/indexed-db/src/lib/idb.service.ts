@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
 
-type IDBDatabaseMap = {
-  [name:string]:IDBDatabase
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class IDBService {
-  private idb: IDBDatabaseMap = {}
+  private idb = new Map<string,IDBDatabase>()
   private IDBFactory: IDBFactory = indexedDB
   constructor() { }
 
@@ -19,15 +15,16 @@ export class IDBService {
    */
   async openIDB(dbName: string, version?: number): Promise<IDBDatabase> {
     const _this = this
-    if (!!_this.idb[dbName]) return Promise.resolve(_this.idb[dbName])
+    if (_this.idb.has(dbName)) return Promise.resolve(_this.idb.get(dbName)!)
     return new Promise((resolve, reject) => {
       const openIDBRequest = _this.IDBFactory.open(dbName, version)
       openIDBRequest.onupgradeneeded = function (event) {
         // console.log("uncorrectly method of using IDB")
       }
       openIDBRequest.onsuccess = function () {
-        _this.idb[dbName] = this.result
-        resolve(_this.idb[dbName])
+        const idb = this.result
+        _this.idb.set(dbName,idb)
+        resolve(idb)
       }
       openIDBRequest.onerror = function (event) {
         console.log(`Failed to open IDB[${dbName}]`, event)
@@ -45,11 +42,11 @@ export class IDBService {
    * @returns 数据库套接字
    */
   async upgradeIDB(dbName: string): Promise<IDBDatabase> {
-    const _this = this
-    if(!!_this.idb[dbName]){
-      _this.idb[dbName].close()
-      delete _this.idb[dbName]
+    if(this.idb.has(dbName)){
+      this.idb.get(dbName)!.close()
+      this.idb.delete(dbName)
     }
+    const _this = this
     return new Promise((resolve, reject) => {
       const latestVersion = Date.now()
       const upgradeIDBRequest = _this.IDBFactory.open(dbName, latestVersion)
@@ -57,7 +54,8 @@ export class IDBService {
         resolve(this.result)
       }
       upgradeIDBRequest.onsuccess = function () {
-        _this.idb[dbName] = this.result
+        const idb = this.result
+        _this.idb.set(dbName,idb)
       }
       upgradeIDBRequest.onerror = function (event) {
         console.log(`Failed to open IDB[${dbName}]`, event)

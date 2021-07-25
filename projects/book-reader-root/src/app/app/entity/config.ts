@@ -1,9 +1,11 @@
+export type ConfigKey = string
+export type ConfigValue = any
 export class Config {
-  name:string
-  value?:string|number|Config|null
+  name:ConfigKey
+  value?:ConfigValue
   constructor(
-    name:string,
-    value?:string|number|Config|null
+    name:ConfigKey,
+    value?:ConfigValue
   ){
     this.name = name
     this.value = value

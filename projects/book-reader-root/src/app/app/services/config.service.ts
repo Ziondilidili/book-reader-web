@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IDB } from 'projects/book-reader-root/src/environments/environment';
 import { IDBRequestConvertor } from 'projects/indexed-db/src/public-api';
-import { Config } from '../entity/config';
+import { Config, ConfigValue } from '../entity/config';
 import { BookReaderService } from './book-reader.service';
 
 const {
@@ -45,12 +45,12 @@ export class ConfigService {
    * @param name 配置名称
    * @returns 配置对象
    */
-  public async getConfig(name:string):Promise<Config>{
+  public async getConfig(name:string,defaultValue?:ConfigValue):Promise<Config>{
     if(this.configCache.has(name))return this.configCache.get(name)!
     const store = await this.openIDBBookReaderConfigStore()
     const getRequest = store.get(name)
     let config = await IDBRequestConvertor<any,Config>(getRequest)
-    config = config || new Config(name)
+    config = config || new Config(name,defaultValue)
     this.configCache.set(config.name,config)
     return config
   }

@@ -49,7 +49,8 @@ export class ConfigService {
     if(this.configCache.has(name))return this.configCache.get(name)!
     const store = await this.openIDBBookReaderConfigStore()
     const getRequest = store.get(name)
-    const config = await IDBRequestConvertor<any,Config>(getRequest)
+    let config = await IDBRequestConvertor<any,Config>(getRequest)
+    config = config || new Config(name)
     this.configCache.set(config.name,config)
     return config
   }

@@ -20,6 +20,11 @@ export const IDB = {
          * }
          */
       ]
+    },
+    Config:{
+      name:"Config",
+      pkey:"name",
+      keys:[]
     }
   }
 }

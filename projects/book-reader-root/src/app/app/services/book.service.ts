@@ -44,7 +44,6 @@ export class BookService {
     // IDBBookReaderBookKeys.forEach(key=>store.createIndex(key.name,key.name,key.options))
     // upgradeIdb.close()
     return this.openIDBBookReaderBookStore(mode)
-
   }
 
   /** 列出书籍名称列表

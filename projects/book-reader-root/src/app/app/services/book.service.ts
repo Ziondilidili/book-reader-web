@@ -6,7 +6,6 @@ import { Chapter } from '../entity/chapter';
 import { BookReaderService } from './book-reader.service';
 
 const {
-  name: IDBBookReaderName,
   Book: IDBBookReaderBook
 } = IDB.BookReader
 const {
@@ -15,15 +14,12 @@ const {
   keys: IDBBookReaderBookKeys
 } = IDBBookReaderBook
 const NullFn = () => { }
-type BookCacheMap = {
-  [name:string]:Book
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
-  private bookCache:BookCacheMap = {}
+  private bookCache = new Map<string,Book>()
   constructor(
     private bookReaderService:BookReaderService
   ) {}
@@ -74,8 +70,8 @@ export class BookService {
     const store = await this.openIDBBookReaderBookStore("readwrite")
     const request = store.put(book,bookName)
     await IDBRequestConvertor<IDBValidKey, void>(request, NullFn)
-    if(!!bookName)delete this.bookCache[bookName]
-    this.bookCache[book.name] = book
+    if(!!bookName)this.bookCache.delete(bookName)
+    this.bookCache.set(book.name,book)
   }
 
   /** 删除书籍
@@ -85,7 +81,7 @@ export class BookService {
     const store = await this.openIDBBookReaderBookStore("readwrite")
     const request = store.delete(bookName)
     await IDBRequestConvertor<undefined, void>(request, NullFn)
-    delete this.bookCache[bookName]
+    this.bookCache.delete(bookName)
   }
 
   /** 打开书籍
@@ -96,7 +92,7 @@ export class BookService {
     const store = await this.openIDBBookReaderBookStore()
     const request = store.get(bookName)
     const book = await IDBRequestConvertor<any, Book>(request)
-    if(!!book)this.bookCache[book.name] = book
+    if(!!book)this.bookCache.set(book.name,book)
     return book
   }
 

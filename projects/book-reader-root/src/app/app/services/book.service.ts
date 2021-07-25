@@ -32,7 +32,7 @@ export class BookService {
    * @param mode 打开模式
    * @returns 事务模式下IDBObjectStore套接字
    */
-  private async openIDBBookReaderBookStore(mode?: IDBTransactionMode | undefined): Promise<IDBObjectStore> {
+  private async openIDBBookReaderBookStore(mode?: IDBTransactionMode): Promise<IDBObjectStore> {
     const idb = await this.bookReaderService.openIDBBookReader()
     if (idb.objectStoreNames.contains(IDBBookReaderBookName)) {
       return idb.transaction(IDBBookReaderBookName, mode).objectStore(IDBBookReaderBookName)

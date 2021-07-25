@@ -6,7 +6,8 @@
 }
 /* 内容层 */
 .content-layer{
-    width: 80%;
+    width: 100%;
+    box-sizing: border-box;
 }
 /* 操作层 */
 .action-layer{

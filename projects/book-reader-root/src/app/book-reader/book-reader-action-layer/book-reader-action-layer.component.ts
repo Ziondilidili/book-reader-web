@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { Book } from '../../app/entity/book';
-import { BookService } from '../../app/services/book.service';
 
 @Component({
   selector: 'book-reader-book-reader-action-layer',
@@ -13,14 +11,7 @@ export class BookReaderActionLayerComponent implements OnInit {
   book?:Book
   @Output("cancel")
   onCancelEmitter:EventEmitter<void> = new EventEmitter()
-  @Output("switchNextChapter")
-  onSwitchNextChapterEmitter:EventEmitter<void> = new EventEmitter()
-  @Output("switchPrevChapter")
-  onSwitchPrevChapterEmitter:EventEmitter<void> = new EventEmitter()
-  constructor(
-    private bookService:BookService,
-    private router:Router
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
@@ -28,21 +19,4 @@ export class BookReaderActionLayerComponent implements OnInit {
   onCancelClick(){
     this.onCancelEmitter.emit()
   }
-
-  existsPrevChapter(){
-    return  this.book && this.book.chapterIndex>0
-  }
-  existsNextChapter(){
-    return this.book && this.book.chapterIndex<this.book.chapters.length-1
-  }
-
-  onSwitchPrevChapter(){
-    this.onCancelEmitter.emit()
-    this.onSwitchPrevChapterEmitter.emit()
-  }
-  onSwitchNextChapter(){
-    this.onCancelEmitter.emit()
-    this.onSwitchNextChapterEmitter.emit()
-  }
-
 }

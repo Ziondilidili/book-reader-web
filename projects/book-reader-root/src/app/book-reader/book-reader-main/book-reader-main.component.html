@@ -3,13 +3,13 @@
     class="content-layer" 
     [chapter]="chapter"
     (close)="onContentLayerClosed($event)"
-    (click)="toggleOperability()"
+    (toggleOperability)="toggleOperability()"
+    (switchPrevChapter)="onSwitchPrevChapter()"
+    (switchNextChapter)="onSwitchNextChapter()"
 ></book-reader-book-reader-content-layer>
 <book-reader-book-reader-action-layer
     class="action-layer"
     [book]="book"
     (cancel)="toggleOperability()"
-    (switchPrevChapter)="onSwitchPrevChapter()"
-    (switchNextChapter)="onSwitchNextChapter()"
     *ngIf="operable"
 ></book-reader-book-reader-action-layer>

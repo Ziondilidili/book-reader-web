@@ -1,6 +1,8 @@
 import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Chapter } from '../../app/entity/chapter';
-import { Subscription, timer } from "rxjs"
+import { IDB } from "projects/book-reader-root/src/environments/environment"
+
+const { chapterSwitchRegionPercent } = IDB.BookReader.Config.defaultValue.content
 
 @Component({
   selector: 'book-reader-book-reader-content-layer',
@@ -19,7 +21,7 @@ export class BookReaderContentLayerComponent implements OnInit,OnDestroy {
   @Output("toggleOperability")
   private onToggleOperabilityEventEmitter:EventEmitter<void> = new EventEmitter()
 
-  private contentClickLeftAndRightAreaWidthPercent:number = 0.33
+  private chapterSwitchRegionPercent:number = chapterSwitchRegionPercent
   constructor() { }
   ngOnDestroy(): void {
     if(!this.chapter)return;
@@ -47,8 +49,8 @@ export class BookReaderContentLayerComponent implements OnInit,OnDestroy {
   @HostListener("click",["$event.x"])
   onHostClick(clickedX:number){
     const documentWidth = document.documentElement.clientWidth
-    const leftAreaEndWidth = documentWidth*this.contentClickLeftAndRightAreaWidthPercent
-    const rightAreaStartWidth = documentWidth*(1-this.contentClickLeftAndRightAreaWidthPercent)
+    const leftAreaEndWidth = documentWidth*this.chapterSwitchRegionPercent
+    const rightAreaStartWidth = documentWidth*(1-this.chapterSwitchRegionPercent)
     if(clickedX < leftAreaEndWidth) this.onSwitchPrevChapter()
     else if(clickedX > rightAreaStartWidth) this.onSwitchNextChapter()
     else this.onToggleOperability()

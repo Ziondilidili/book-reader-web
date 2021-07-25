@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material/bottom-sheet';
 import { Book } from '../../app/entity/book';
+import { BookReaderStyleComponent } from '../book-reader-style/book-reader-style.component';
 
 @Component({
   selector: 'book-reader-book-reader-action-layer',
@@ -11,12 +13,18 @@ export class BookReaderActionLayerComponent implements OnInit {
   book?:Book
   @Output("cancel")
   onCancelEmitter:EventEmitter<void> = new EventEmitter()
-  constructor() { }
+  constructor(
+    private styleConfig:MatBottomSheet
+  ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onCancelClick(){
     this.onCancelEmitter.emit()
+  }
+
+  openStyleConfig(){
+    this.onCancelClick()
+    this.styleConfig.open(BookReaderStyleComponent)
   }
 }

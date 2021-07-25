@@ -24,7 +24,18 @@ export const IDB = {
     Config:{
       name:"Config",
       pkey:"name",
-      keys:[]
+      keys:[],
+      defaultValue:{
+        content:{
+          fontSize:14,
+          bold:false,
+          fontFamily:"黑体",
+          textIndent:"2em",
+          fontColor:"black",
+          bgColor:"white",
+          chapterSwitchRegionPercent:0.33
+        }
+      }
     }
   }
 }

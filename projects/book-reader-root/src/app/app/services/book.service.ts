@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IDBService } from 'projects/indexed-db/src/public-api';
+import { IDBRequestConvertor, IDBService } from 'projects/indexed-db/src/public-api';
 import { IDB } from "projects/book-reader-root/src/environments/environment"
 import { Book } from '../entity/book';
 import { Chapter } from '../entity/chapter';
@@ -59,33 +59,13 @@ export class BookService {
 
   }
 
-  /** 将IDBRequest转换为Promise
-   * @param request IDBRequest
-   * @returns Promise
-   */
-  private async convertPromise<T = any, R = any>(
-    request: IDBRequest<T>,
-    convertor: (result: T) => R = result => result as any
-  ) {
-    return new Promise<R>((resolve, reject) => {
-      request.onsuccess = function (ev) {
-        const result = this.result
-        const convertedResult = convertor(result)
-        resolve(convertedResult)
-      }
-      request.onerror = function (ev) {
-        reject(ev)
-      }
-    })
-  }
-
   /** 列出书籍名称列表
    * @returns 书籍名称列表
    */
   async listBookNames(): Promise<string[]> {
     const store = await this.openIDBBookReaderBookStore()
     const getAllKeysRequest = store.getAllKeys()
-    return this.convertPromise(getAllKeysRequest, keys => keys as string[])
+    return IDBRequestConvertor(getAllKeysRequest, keys => keys as string[])
   }
 
   /** 创建书籍
@@ -94,10 +74,10 @@ export class BookService {
   async createBook(book: Book): Promise<void> {
     const store = await this.openIDBBookReaderBookStore("readwrite")
     const getAllKeysRequest = store.getAllKeys(book.name)
-    const bookNameList = await this.convertPromise<IDBValidKey[],string[]>(getAllKeysRequest)
+    const bookNameList = await IDBRequestConvertor<IDBValidKey[],string[]>(getAllKeysRequest)
     if(bookNameList.includes(book.name))return;
     const request = store.add(book)
-    return this.convertPromise<IDBValidKey, void>(request, NullFn)
+    return IDBRequestConvertor<IDBValidKey, void>(request, NullFn)
   }
 
   /** 更新书籍
@@ -106,7 +86,7 @@ export class BookService {
   async updateBook(book: Book,bookName?:string): Promise<void> {
     const store = await this.openIDBBookReaderBookStore("readwrite")
     const request = store.put(book,bookName)
-    await this.convertPromise<IDBValidKey, void>(request, NullFn)
+    await IDBRequestConvertor<IDBValidKey, void>(request, NullFn)
     if(!!bookName)delete this.bookCache[bookName]
     this.bookCache[book.name] = book
   }
@@ -117,7 +97,7 @@ export class BookService {
   async deleteBook(bookName: string): Promise<void> {
     const store = await this.openIDBBookReaderBookStore("readwrite")
     const request = store.delete(bookName)
-    await this.convertPromise<undefined, void>(request, NullFn)
+    await IDBRequestConvertor<undefined, void>(request, NullFn)
     delete this.bookCache[bookName]
   }
 
@@ -128,7 +108,7 @@ export class BookService {
   async openBook(bookName: string): Promise<Book> {
     const store = await this.openIDBBookReaderBookStore()
     const request = store.get(bookName)
-    const book = await this.convertPromise<any, Book>(request)
+    const book = await IDBRequestConvertor<any, Book>(request)
     if(!!book)this.bookCache[book.name] = book
     return book
   }

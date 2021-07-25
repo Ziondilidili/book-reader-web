@@ -3,3 +3,4 @@
  */
 
 export * from "./lib/idb.service"
+export * from "./lib/idb-request-convertor"

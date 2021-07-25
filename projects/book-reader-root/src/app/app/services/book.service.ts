@@ -3,6 +3,7 @@ import { IDBRequestConvertor, IDBService } from 'projects/indexed-db/src/public-
 import { IDB } from "projects/book-reader-root/src/environments/environment"
 import { Book } from '../entity/book';
 import { Chapter } from '../entity/chapter';
+import { BookReaderService } from './book-reader.service';
 
 const {
   name: IDBBookReaderName,
@@ -24,33 +25,20 @@ type BookCacheMap = {
 export class BookService {
   private bookCache:BookCacheMap = {}
   constructor(
-    private idbService: IDBService
+    private bookReaderService:BookReaderService
   ) {}
 
-  /** 打开BookReader数据库
-   * @returns IDBDatabase
-   */
-  private async openIDBBookReader(): Promise<IDBDatabase> {
-    return this.idbService.openIDB(IDBBookReaderName)
-  }
-
-  /** 更新BookReader数据库
-   * @returns IDBDatabase
-   */
-  private async upgradeIDBBookReader(): Promise<IDBDatabase> {
-    return this.idbService.upgradeIDB(IDBBookReaderName)
-  }
   /** 打开BookReader数据库Book数据文档
    * @param mode 打开模式
    * @returns 事务模式下IDBObjectStore套接字
    */
   private async openIDBBookReaderBookStore(mode?: IDBTransactionMode | undefined): Promise<IDBObjectStore> {
-    const idb = await this.openIDBBookReader()
+    const idb = await this.bookReaderService.openIDBBookReader()
     if (idb.objectStoreNames.contains(IDBBookReaderBookName)) {
       return idb.transaction(IDBBookReaderBookName, mode).objectStore(IDBBookReaderBookName)
     }
     // console.log(idb)
-    const upgradeIdb = await this.upgradeIDBBookReader()
+    const upgradeIdb = await this.bookReaderService.upgradeIDBBookReader()
     // console.log(upgradeIdb)
     const store = upgradeIdb.createObjectStore(IDBBookReaderBookName, { keyPath: IDBBookReaderBookPKey })
     // IDBBookReaderBookKeys.forEach(key=>store.createIndex(key.name,key.name,key.options))

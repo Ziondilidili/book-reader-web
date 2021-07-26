@@ -6,6 +6,18 @@ export const environment = {
   production: false
 };
 
+const IDBBookReaderConfigPredefineValue:{
+  [name:string]:any
+} = {
+  ["content.fontSize"]:14,
+  ["content.bold"]:false,
+  ["content.fontFamily"]:"黑体",
+  ["content.textIndent"]:"2em",
+  ["content.fontColor"]:"black",
+  ["content.bgColor"]:"white",
+  ["content.chapterSwitchRegionPercent"]:0.33
+}
+
 export const IDB = {
   BookReader: {
     name: "BookReader",
@@ -25,17 +37,7 @@ export const IDB = {
       name:"Config",
       pkey:"name",
       keys:[],
-      defaultValue:{
-        content:{
-          fontSize:14,
-          bold:false,
-          fontFamily:"黑体",
-          textIndent:"2em",
-          fontColor:"black",
-          bgColor:"white",
-          chapterSwitchRegionPercent:0.33
-        }
-      }
+      predefineValue:IDBBookReaderConfigPredefineValue
     }
   }
 }

@@ -1,6 +1,6 @@
 export class Config {
   name:string
-  value?:any
+  value:any
   constructor(
     name:string,
     value?:any

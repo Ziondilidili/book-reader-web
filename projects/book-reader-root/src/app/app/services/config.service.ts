@@ -33,6 +33,8 @@ export class ConfigService {
   private getPredefineConfigFromEnv(name:string):Config{
     if(!IDBBookReaderConfigPredefineValue)
       throw new Error("Env[IDB.Config.predefineValue] is missing")
+    if(!Object.keys(IDBBookReaderConfigPredefineValue).includes(name))
+      throw new Error(`Env[IDB.Config.predefineValue][${name}] is missing`)
     const predefineValue = IDBBookReaderConfigPredefineValue[name]
     return new Config(name,predefineValue)
   }
@@ -89,6 +91,16 @@ export class ConfigService {
     if(this.configSubjectCache.has(name))return this.configSubjectCache.get(name)!
     const config = await this.getConfig(name)
     const subject = new BehaviorSubject<Config>(config)
+    this.configSubjectCache.set(name,subject)
     return subject
+  }
+
+  public async setObservableConfig(config:Config){
+    const subject = this.configSubjectCache.get(config.name)
+    if(!subject){
+      throw new Error(`Unknown Subject [${config.name}]`)
+    }
+    await this.setConfig(config)
+    subject.next(config)
   }
 }

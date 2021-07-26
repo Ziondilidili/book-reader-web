@@ -2,7 +2,7 @@ import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output
 import { Chapter } from '../../app/entity/chapter';
 import { IDB } from "projects/book-reader-root/src/environments/environment"
 
-const { chapterSwitchRegionPercent } = IDB.BookReader.Config.defaultValue.content
+const chapterSwitchRegionPercent = IDB.BookReader.Config.predefineValue["content.chapterSwitchRegionPercent"]
 
 @Component({
   selector: 'book-reader-book-reader-content-layer',
@@ -22,6 +22,7 @@ export class BookReaderContentLayerComponent implements OnInit,OnDestroy {
   private onToggleOperabilityEventEmitter:EventEmitter<void> = new EventEmitter()
 
   private chapterSwitchRegionPercent:number = chapterSwitchRegionPercent
+  // private chapterSwitchRegionPercent:number = 0.33
   constructor() { }
   ngOnDestroy(): void {
     if(!this.chapter)return;

@@ -61,7 +61,7 @@ export class ConfigService {
    * @param name 配置名称
    * @returns 配置对象
    */
-  public async getConfig(name:string):Promise<Config>{
+  private async getConfig(name:string):Promise<Config>{
     if(this.configCache.has(name))return this.configCache.get(name)!
     const store = await this.openIDBBookReaderConfigStore()
     const getRequest = store.get(name)
@@ -74,16 +74,14 @@ export class ConfigService {
   /** 设定设置
    * @param config 配置对象
    */
-  public async setConfig(config:Config):Promise<void>{
-    // Unnecessary cache cleanup
-    // if(this.configCache.has(config.name))this.configCache.delete(config.name)
+  private async updateConfig(config:Config):Promise<void>{
     const store = await this.openIDBBookReaderConfigStore("readwrite")
     const putRequest = store.put(config)
     await IDBRequestConvertor(putRequest)
     this.configCache.set(config.name,config)
   }
 
-  /** 获取指定配置Subject(带有初始值)
+  /** 获取可观察配置
    * @param name 配置名称
    * @returns 配置Subject
    */
@@ -95,12 +93,13 @@ export class ConfigService {
     return subject
   }
 
-  public async setObservableConfig(config:Config){
+  /** 更新配置并通知所有观察者
+   * @param config 
+   */
+  public async updateObservableConfig(config:Config):Promise<void>{
     const subject = this.configSubjectCache.get(config.name)
-    if(!subject){
-      throw new Error(`Unknown Subject [${config.name}]`)
-    }
-    await this.setConfig(config)
+    if(!subject)throw new Error(`Unknown Subject [${config.name}]`)
+    await this.updateConfig(config)
     subject.next(config)
   }
 }

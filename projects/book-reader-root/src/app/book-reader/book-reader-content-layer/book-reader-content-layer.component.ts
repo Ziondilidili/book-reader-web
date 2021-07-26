@@ -13,58 +13,67 @@ export class BookReaderContentLayerComponent implements OnInit,OnDestroy {
   @Input("chapter")
   chapter?:Chapter
   @Output("close")
-  private onClose:EventEmitter<Chapter> = new EventEmitter()
+  private closeEmitter:EventEmitter<Chapter> = new EventEmitter()
   @Output("switchNextChapter")
-  private onSwitchNextChapterEmitter:EventEmitter<void> = new EventEmitter()
+  private switchNextChapterEmitter:EventEmitter<void> = new EventEmitter()
   @Output("switchPrevChapter")
-  private onSwitchPrevChapterEmitter:EventEmitter<void> = new EventEmitter()
+  private switchPrevChapterEmitter:EventEmitter<void> = new EventEmitter()
   @Output("toggleOperability")
-  private onToggleOperabilityEventEmitter:EventEmitter<void> = new EventEmitter()
-
+  private toggleOperabilityEventEmitter:EventEmitter<void> = new EventEmitter()
+  // 章节切换区域百分比
   private chapterSwitchRegionPercent:number = chapterSwitchRegionPercent
-  // private chapterSwitchRegionPercent:number = 0.33
+
   constructor() { }
+  ngOnInit(): void {
+  }
+  // 关闭页面时 保存当前阅读状态
   ngOnDestroy(): void {
     if(!this.chapter)return;
     this.chapter.lengthOfReaded = document.documentElement.scrollTop
-    this.onClose.emit(this.chapter)
+    this.close()
   }
+  // 关闭章节
+  close(){
+    this.closeEmitter.emit(this.chapter)
+  }
+  // 滑动页面至上次阅读位置 由(cdkObserveContent)调用
   scrollToLastReadingLocation(){
     if(!this.chapter)return;
     document.documentElement.scroll({
       top:this.chapter?.lengthOfReaded || 0
     })
   }
-  ngOnInit(): void {
+  // 切换上一页
+  switchPrevChapter(){
+    this.switchPrevChapterEmitter.emit()
   }
-  onSwitchPrevChapter(){
-    this.onSwitchPrevChapterEmitter.emit()
+  // 切换下一页
+  switchNextChapter(){
+    this.switchNextChapterEmitter.emit()
   }
-  onSwitchNextChapter(){
-    this.onSwitchNextChapterEmitter.emit()
+  // 切换操作栏可见性
+  toggleOperability(){
+    this.toggleOperabilityEventEmitter.emit()
   }
-  onToggleOperability(){
-    this.onToggleOperabilityEventEmitter.emit()
-  }
-
+  // 监听鼠标点击事件 用于判断是切换上下页还是切换操作栏可见性
   @HostListener("click",["$event.x"])
   onHostClick(clickedX:number){
     const documentWidth = document.documentElement.clientWidth
     const leftAreaEndWidth = documentWidth*this.chapterSwitchRegionPercent
     const rightAreaStartWidth = documentWidth*(1-this.chapterSwitchRegionPercent)
-    if(clickedX < leftAreaEndWidth) this.onSwitchPrevChapter()
-    else if(clickedX > rightAreaStartWidth) this.onSwitchNextChapter()
-    else this.onToggleOperability()
+    if(clickedX < leftAreaEndWidth) this.switchPrevChapter()
+    else if(clickedX > rightAreaStartWidth) this.switchNextChapter()
+    else this.toggleOperability()
   }
-
+  // 监听键盘按键 实现左右方向键切换上下页
   @HostListener("window:keydown",["$event.key"])
   onKeydown(keyboardEventKey:string){
     switch(keyboardEventKey){
       case "ArrowLeft":{
-        this.onSwitchPrevChapter()
+        this.switchPrevChapter()
       };break;
       case "ArrowRight":{
-        this.onSwitchNextChapter()
+        this.switchNextChapter()
       };break;
       // case "ArrowUp":{};break;
       // case "ArrowDown":{};break;

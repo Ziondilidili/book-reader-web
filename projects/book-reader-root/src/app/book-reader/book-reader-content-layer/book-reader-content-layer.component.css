@@ -16,8 +16,5 @@
 /* 正文 */
 .content{
     display: inline-block;
-    text-indent: 2em;
-    line-height: 1.5em;
-    font-size:small;
     white-space: pre-wrap;
 }

@@ -9,4 +9,5 @@
     class="content"
     role="content"
     (cdkObserveContent)="scrollToLastReadingLocation()"
+    [ngStyle]="contentStyleObject"
 >{{chapter?.content}}</span>

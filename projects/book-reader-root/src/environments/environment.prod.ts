@@ -5,7 +5,7 @@ const IDBBookReaderConfigPredefineValue:{
   [name:string]:any
 } = {
   ["content.fontSize.px"]:14,
-  ["content.bold"]:false,
+  ["content.fontWeight"]:"normal",
   ["content.fontFamily"]:"黑体",
   ["content.textIndent.em"]:2,
   ["content.fontColor"]:"black",

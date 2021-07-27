@@ -11,7 +11,7 @@ const contentConfigNameStyleNameMap: {
   [configName: string]: string
 } = {
   ["content.fontSize.px"]: "font-size.px",
-  ["content.bold"]: "bold",
+  ["content.fontWeight"]: "font-weight",
   ["content.fontFamily"]: "font-family",
   ["content.textIndent.em"]: "text-indent.em",
   ["content.fontColor"]: "color",
@@ -53,7 +53,7 @@ export class BookReaderContentLayerComponent implements OnInit, OnDestroy {
       "content.fontSize.px",
       "content.fontColor",
       "content.bgColor",
-      "content.bold",
+      "content.fontWeight",
       "content.fontFamily",
       "content.textIndent.em",
       "content.lineHeight.em"

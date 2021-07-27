@@ -4,6 +4,7 @@ import { of, Subject, Subscription } from 'rxjs';
 import { concatAll, map } from "rxjs/operators"
 import { Config } from '../../app/entity/config';
 import { ConfigService } from '../../app/services/config.service';
+import { ColorSelectorComponent } from '../color-selector/color-selector.component';
 import { TextIndentSelectorComponent } from '../text-indent-selector/text-indent-selector.component';
 
 @Component({
@@ -112,6 +113,26 @@ export class BookReaderStyleComponent implements OnInit,OnDestroy {
     dialog.afterClosed().subscribe(updatedTextIndentValue=>{
       if(!updatedTextIndentValue || updatedTextIndentValue === currentTextIndentValue)return;
       this.updateTextIndentEM(updatedTextIndentValue)
+    })
+  }
+  // 打开字体颜色选择对话框
+  openFontColorSelectorDialog(color:string){
+    const dialog = this.dialog.open<ColorSelectorComponent,string,string>(ColorSelectorComponent,{
+      data:color
+    })
+    dialog.afterClosed().subscribe(newColor=>{
+      if(!newColor || newColor === color)return;
+      this.updateFontColor(newColor)
+    })
+  }
+  // 打开背景颜色选择对话框
+  openBgColorSelectorDialog(color:string){
+    const dialog = this.dialog.open<ColorSelectorComponent,string,string>(ColorSelectorComponent,{
+      data:color
+    })
+    dialog.afterClosed().subscribe(newColor=>{
+      if(!newColor || newColor === color)return;
+      this.updateBgColor(newColor)
     })
   }
 }

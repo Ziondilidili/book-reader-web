@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>
+  颜色选择器
+</h2>
+<mat-dialog-content>
+  <mat-card>
+    <div [style.background-color]="color" class="color-displayer"></div>
+  </mat-card>
+  <input #newColor matInput placeholder="输入颜色" [value]="color" (input)="color = newColor.value" cdkFocusInitial>
+</mat-dialog-content>
+<mat-dialog-actions align=end>
+  <button mat-button mat-dialog-close>取消</button>
+  <button #finishBtn mat-button [mat-dialog-close]="newColor.value">更改</button>
+</mat-dialog-actions>

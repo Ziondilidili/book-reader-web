@@ -43,3 +43,11 @@
   <button mat-stroked-button
     (click)="openTextIndentSelectorDialog(this.styleConfigMap.get('content.textIndentEM')?.value)">缩进</button>
 </span> -->
+<!-- 字体颜色选择器 -->
+<span class="config-item font-color">
+  <button mat-button (click)="openFontColorSelectorDialog(this.styleConfigMap.get('content.fontColor')?.value)">字体颜色</button>
+</span>
+<!-- 背景颜色选择器 -->
+<span class="config-item bgcolor">
+  <button mat-button (click)="openBgColorSelectorDialog(this.styleConfigMap.get('content.bgColor')?.value)">背景颜色</button>
+</span>

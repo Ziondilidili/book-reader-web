@@ -10,6 +10,7 @@ import { BookReaderChapterListComponent } from './book-reader-chapter-list/book-
 import { BookReaderStyleComponent } from './book-reader-style/book-reader-style.component';
 import { BookReaderSettingComponent } from './book-reader-setting/book-reader-setting.component';
 import { TextIndentSelectorComponent } from './text-indent-selector/text-indent-selector.component';
+import { ColorSelectorComponent } from './color-selector/color-selector.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { TextIndentSelectorComponent } from './text-indent-selector/text-indent-
     BookReaderChapterListComponent,
     BookReaderStyleComponent,
     BookReaderSettingComponent,
-    TextIndentSelectorComponent
+    TextIndentSelectorComponent,
+    ColorSelectorComponent
   ],
   imports: [
     CommonModule,

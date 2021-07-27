@@ -96,10 +96,11 @@ export class BookReaderStyleComponent implements OnInit,OnDestroy {
     this.configService.updateObservableConfig(config)
   }
   // 更改行高
-  updateLineHeightEM(lineHeightEM:number){
+  updateLineHeightEM(dheight:number){
     const config = this.styleConfigMap.get("content.lineHeight.em")
     if(!config)return;
-    config.value = lineHeightEM
+    config.value += dheight
+    config.value = Math.round(config.value*10)/10
     this.configService.updateObservableConfig(config)
   }
 

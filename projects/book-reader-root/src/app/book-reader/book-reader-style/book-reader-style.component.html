@@ -1,7 +1,7 @@
 <!-- 第一行 -->
 <span class="first-line">
   <!-- 字体大小 -->
-  <span class="font-size">
+  <span class="config-item">
     <button mat-button aria-label="sub-font-size" (click)="updateFontSizePX(-1)">
       <mat-icon>remove</mat-icon>
     </button>
@@ -12,8 +12,20 @@
       <mat-icon>add</mat-icon>
     </button>
   </span>
+  <!-- 行高 -->
+  <span class="config-item">
+    <button mat-button aria-label="sub-line-height" (click)="updateLineHeightEM(-0.1)">
+      <mat-icon>remove</mat-icon>
+    </button>
+    <span>
+      {{this.styleConfigMap.get("content.lineHeight.em")?.value}}
+    </span>
+    <button mat-button aria-label="add-line-height" (click)="updateLineHeightEM(0.1)">
+      <mat-icon>add</mat-icon>
+    </button>
+  </span>
   <!-- 字重 -->
-  <span class="font-weight">
+  <span class="config-item">
     <!-- <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="updateFontWeight($event.value)"
       [value]="styleConfigMap.get('content.fontWeight')?.value">
       <mat-button-toggle value="normal">普通</mat-button-toggle>
@@ -25,7 +37,7 @@
     >加粗</mat-checkbox>
   </span>
   <!-- 缩进 -->
-  <!-- <span class="text-indent">
+  <!-- <span class="config-item">
     <button mat-stroked-button (click)="openTextIndentSelectorDialog(this.styleConfigMap.get('content.textIndentEM')?.value)">缩进</button>
   </span> -->
 </span>

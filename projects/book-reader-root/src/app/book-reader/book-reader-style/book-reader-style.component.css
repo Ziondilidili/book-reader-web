@@ -9,12 +9,9 @@
   align-items: center;
   justify-content: space-around;
 }
-.font-size{
-  /* flex: 1; */
-}
-.font-weight{
-  /* flex: 3; */
-}
-.text-indent{
-  
+.config-item{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
 }

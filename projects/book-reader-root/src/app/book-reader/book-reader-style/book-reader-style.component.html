@@ -1,7 +1,7 @@
-<!-- 第一行 -->
-<span class="first-line">
-  <!-- 字体大小 -->
-  <span class="config-item">
+<!-- 字体大小 -->
+<span class="config-item font-size">
+  <span class="title">字体大小</span>
+  <span class="setting">
     <button mat-button aria-label="sub-font-size" (click)="updateFontSizePX(-1)">
       <mat-icon>remove</mat-icon>
     </button>
@@ -12,8 +12,21 @@
       <mat-icon>add</mat-icon>
     </button>
   </span>
-  <!-- 行高 -->
-  <span class="config-item">
+</span>
+<!-- 字重 -->
+<span class="config-item font-weight">
+  <!-- <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="updateFontWeight($event.value)"
+      [value]="styleConfigMap.get('content.fontWeight')?.value">
+      <mat-button-toggle value="normal">普通</mat-button-toggle>
+      <mat-button-toggle value="bold">加粗</mat-button-toggle>
+    </mat-button-toggle-group> -->
+  <mat-checkbox [checked]="styleConfigMap.get('content.fontWeight')?.value === 'bold'"
+    (change)="updateFontWeight($event.checked ? 'bold':'normal')">加粗</mat-checkbox>
+</span>
+<!-- 行高 -->
+<span class="config-item line-height">
+  <span class="title">行高</span>
+  <span class="setting">
     <button mat-button aria-label="sub-line-height" (click)="updateLineHeightEM(-0.1)">
       <mat-icon>remove</mat-icon>
     </button>
@@ -24,24 +37,9 @@
       <mat-icon>add</mat-icon>
     </button>
   </span>
-  <!-- 字重 -->
-  <span class="config-item">
-    <!-- <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="updateFontWeight($event.value)"
-      [value]="styleConfigMap.get('content.fontWeight')?.value">
-      <mat-button-toggle value="normal">普通</mat-button-toggle>
-      <mat-button-toggle value="bold">加粗</mat-button-toggle>
-    </mat-button-toggle-group> -->
-    <mat-checkbox
-      [checked]="styleConfigMap.get('content.fontWeight')?.value === 'bold'"
-      (change)="updateFontWeight($event.checked ? 'bold':'normal')"
-    >加粗</mat-checkbox>
-  </span>
-  <!-- 缩进 -->
-  <!-- <span class="config-item">
-    <button mat-stroked-button (click)="openTextIndentSelectorDialog(this.styleConfigMap.get('content.textIndentEM')?.value)">缩进</button>
-  </span> -->
 </span>
-<!-- 第二行 -->
-<span class="second-line"></span>
-<!-- 第三行 -->
-<span class="third-line"></span>
+<!-- 缩进 -->
+<!-- <span class="config-item text-indent">
+  <button mat-stroked-button
+    (click)="openTextIndentSelectorDialog(this.styleConfigMap.get('content.textIndentEM')?.value)">缩进</button>
+</span> -->

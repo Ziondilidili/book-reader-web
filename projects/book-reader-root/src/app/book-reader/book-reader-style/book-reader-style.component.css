@@ -1,17 +1,41 @@
 :host{
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-.first-line{
-  display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 .config-item{
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
+  justify-content: flex-start;
+}
+.font-size{
+  width: 80%;
+}
+.font-size.title{
+  flex: 1;
+}
+.font-size.setting{
+  flex: 2;
+}
+.font-weight{
+  width: 20%;
+}
+.line-height{
+  width: 80%;
+}
+.line-height.title{
+  flex: 1;
+}
+.line-height.setting{
+  flex: 2;
+}
+.line-height.setting *{
+  flex: 1;
+}
+.text-indent{
+  width: 20%;
 }

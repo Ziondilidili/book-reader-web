@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { of, Subject, Subscription } from 'rxjs';
 import { concatAll, map } from "rxjs/operators"
 import { Config } from '../../app/entity/config';
 import { ConfigService } from '../../app/services/config.service';
+import { TextIndentSelectorComponent } from '../text-indent-selector/text-indent-selector.component';
 
 @Component({
   selector: 'book-reader-book-reader-style',
@@ -26,7 +28,8 @@ export class BookReaderStyleComponent implements OnInit,OnDestroy {
   private subscriptionList:Subscription[] = []
 
   constructor(
-    private configService:ConfigService
+    private configService:ConfigService,
+    private dialog:MatDialog
   ) { }
   ngOnInit(): void {
     // 订阅样式配置
@@ -100,5 +103,14 @@ export class BookReaderStyleComponent implements OnInit,OnDestroy {
     this.configService.updateObservableConfig(config)
   }
 
-
+  // 打开缩进选择对话框
+  openTextIndentSelectorDialog(currentTextIndentValue:number){
+    const dialog = this.dialog.open<TextIndentSelectorComponent,number,number>(TextIndentSelectorComponent,{
+      data:currentTextIndentValue
+    })
+    dialog.afterClosed().subscribe(updatedTextIndentValue=>{
+      if(!updatedTextIndentValue || updatedTextIndentValue === currentTextIndentValue)return;
+      this.updateTextIndentEM(updatedTextIndentValue)
+    })
+  }
 }

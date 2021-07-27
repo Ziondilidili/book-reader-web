@@ -25,7 +25,7 @@
   width: 20%;
 }
 .line-height{
-  width: 80%;
+  width: 60%;
 }
 .line-height.title{
   flex: 1;
@@ -37,5 +37,11 @@
   flex: 1;
 }
 .text-indent{
+  width: 20%;
+}
+.font-color{
+  width: 20%;
+}
+.bg-color{
   width: 20%;
 }

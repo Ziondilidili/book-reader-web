@@ -9,6 +9,10 @@
 			"path": "..\\projects\\book-reader-root"
 		},
 		{
+			"name": "IDBLib",
+			"path": "..\\projects\\indexed-db\\src"
+		},
+		{
 			"name": "Env",
 			"path": "..\\projects\\book-reader-root\\src\\environments"
 		},

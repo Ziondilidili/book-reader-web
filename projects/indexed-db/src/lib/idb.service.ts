@@ -19,7 +19,7 @@ export class IDBService {
     return new Promise((resolve, reject) => {
       const openIDBRequest = _this.IDBFactory.open(dbName, version)
       openIDBRequest.onupgradeneeded = function (event) {
-        // console.log("uncorrectly method of using IDB")
+        console.warn("shouldn't open with higher version on openning IDB ",event)
       }
       openIDBRequest.onsuccess = function () {
         const idb = this.result
@@ -27,12 +27,12 @@ export class IDBService {
         resolve(idb)
       }
       openIDBRequest.onerror = function (event) {
-        console.log(`Failed to open IDB[${dbName}]`, event)
-        reject(event)
+        console.warn(`Failed to open IDB[${dbName}]`, event)
+        // reject(event)
       }
       openIDBRequest.onblocked = function (event) {
-        console.log(`IDB[${dbName}] has been blocked`, event)
-        reject(event)
+        console.warn(`IDB[${dbName}] has been blocked`, event)
+        // reject(event)
       }
     })
   }
@@ -58,12 +58,12 @@ export class IDBService {
         _this.idb.set(dbName,idb)
       }
       upgradeIDBRequest.onerror = function (event) {
-        console.log(`Failed to open IDB[${dbName}]`, event)
-        reject(event)
+        console.warn(`Failed to open IDB[${dbName}]`, event)
+        // reject(event)
       }
       upgradeIDBRequest.onblocked = function (event) {
-        console.log(`IDB[${dbName}] has been blocked`, event)
-        reject(event)
+        console.warn(`IDB[${dbName}] has been blocked`, event)
+        // reject(event)
       }
     })
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IDB } from 'projects/book-reader-root/src/environments/environment';
 import { IDBRequestConvertor } from 'projects/indexed-db/src/public-api';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Config } from '../entity/config';
 import { BookReaderService } from './book-reader.service';
 

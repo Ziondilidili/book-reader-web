@@ -19,7 +19,8 @@ export class IDBService {
     return new Promise((resolve, reject) => {
       const openIDBRequest = _this.IDBFactory.open(dbName, version)
       openIDBRequest.onupgradeneeded = function (event) {
-        console.warn("shouldn't open with higher version on openning IDB ",event)
+        const version = this.result.version
+        if(version>1)console.warn("shouldn't open with higher version on openning IDB ",event)
       }
       openIDBRequest.onsuccess = function () {
         const idb = this.result

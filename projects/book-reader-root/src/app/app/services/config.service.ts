@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IDB } from 'projects/book-reader-root/src/environments/environment';
 import { IDBRequestConvertor } from 'projects/indexed-db/src/public-api';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, PartialObserver } from 'rxjs';
 import { Config } from '../entity/config';
 import { BookReaderService } from './book-reader.service';
 
@@ -95,4 +95,25 @@ export class ConfigService {
     await this.updateConfig(config)
     subject.next(config)
   }
+
+  // public async getConfigObserver(name:string):ConfigObserver{
+    
+  // }
 }
+
+// export class ConfigObserver{
+//   private subject:BehaviorSubject<Config>
+//   constructor(
+//     subject:BehaviorSubject<Config>,
+
+//   ){
+//     this.subject = subject
+//   }
+//   subscribe(observer?: PartialObserver<Config> | undefined){
+//     return this.subject.subscribe(observer)
+//   }
+//   update(value:any|Config){
+
+//   }
+
+// }

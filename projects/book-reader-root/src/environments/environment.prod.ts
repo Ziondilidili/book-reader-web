@@ -13,6 +13,7 @@ const IDBBookReaderConfigPredefineValue:{
   ["content.lineHeight.em"]:1.5,
   ["content.chapterSwitchRegionPercent"]:0.1,
   ["title.color"]: "green",
+  ["title.fontSize.px"]: 14,
 }
 
 export const IDB = {

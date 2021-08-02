@@ -20,7 +20,8 @@ const contentConfigNameStyleNameMap: {
 const titleConfigNameStyleNameMap: {
   [configName: string]: string
 } = {
-  ["title.color"]: "color"
+  ["title.color"]: "color",
+  ["title.fontSize.px"]: "font-size.px"
 }
 
 @Component({
@@ -85,7 +86,8 @@ export class BookReaderContentLayerComponent implements OnInit, OnDestroy {
     })
     // 标题配置名称列表
     const titleConfigNameList = [
-      "title.color"
+      "title.color",
+      "title.fontSize.px",
     ]
     of(...titleConfigNameList).pipe(
       map(configName => this.configService.getObservableConfig(configName)),

@@ -46,6 +46,12 @@ export class BookReaderContentLayerComponent implements OnInit, OnDestroy {
     [klass: string]: any;
   } = {}
 
+  constructor(
+    private configService: ConfigService
+  ) { }
+  ngOnInit(): void {
+    this.subscribeStyleConfig()
+  }
   // 订阅获取相关样式配置信息
   subscribeStyleConfig() {
     // 正文配置名称列表
@@ -75,13 +81,6 @@ export class BookReaderContentLayerComponent implements OnInit, OnDestroy {
     this.styleConfigSubscriptionList.forEach(subscription => {
       subscription.unsubscribe()
     })
-  }
-
-  constructor(
-    private configService: ConfigService
-  ) { }
-  ngOnInit(): void {
-    this.subscribeStyleConfig()
   }
   // 关闭页面时 保存当前阅读状态
   ngOnDestroy(): void {

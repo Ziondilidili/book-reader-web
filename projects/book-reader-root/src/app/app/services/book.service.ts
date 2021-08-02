@@ -30,16 +30,9 @@ export class BookService {
    */
   private async openIDBBookReaderBookStore(mode?: IDBTransactionMode): Promise<IDBObjectStore> {
     const idb = await this.bookReaderService.openIDBBookReader()
-    if (idb.objectStoreNames.contains(IDBBookReaderBookName)) {
-      return idb.transaction(IDBBookReaderBookName, mode).objectStore(IDBBookReaderBookName)
-    }
-    // console.log(idb)
-    const upgradeIdb = await this.bookReaderService.upgradeIDBBookReader()
-    // console.log(upgradeIdb)
-    const store = upgradeIdb.createObjectStore(IDBBookReaderBookName, { keyPath: IDBBookReaderBookPKey })
-    // IDBBookReaderBookKeys.forEach(key=>store.createIndex(key.name,key.name,key.options))
-    // upgradeIdb.close()
-    return this.openIDBBookReaderBookStore(mode)
+    if (!idb.objectStoreNames.contains(IDBBookReaderBookName))
+      throw new Error(`IDB[${idb.name}].Store[${IDBBookReaderBookName}] is not exists`)
+    return idb.transaction(IDBBookReaderBookName, mode).objectStore(IDBBookReaderBookName)
   }
 
   /** 列出书籍名称列表

@@ -45,16 +45,9 @@ export class ConfigService {
    */
   private async openIDBBookReaderConfigStore(mode?: IDBTransactionMode): Promise<IDBObjectStore> {
     const idb = await this.bookReaderService.openIDBBookReader()
-    if (idb.objectStoreNames.contains(IDBBookReaderConfigName)) {
-      return idb.transaction(IDBBookReaderConfigName, mode).objectStore(IDBBookReaderConfigName)
-    }
-    // console.log(idb)
-    const upgradeIdb = await this.bookReaderService.upgradeIDBBookReader()
-    // console.log(upgradeIdb)
-    const store = upgradeIdb.createObjectStore(IDBBookReaderConfigName, { keyPath: IDBBookReaderConfigPKey })
-    // IDBBookReaderConfigKeys.forEach(key=>store.createIndex(key.name,key.name,key.options))
-    // upgradeIdb.close()
-    return this.openIDBBookReaderConfigStore(mode)
+    if (!idb.objectStoreNames.contains(IDBBookReaderConfigName))
+      throw new Error(`IDB[${idb.name}].Store[${IDBBookReaderConfigName}] is not exists`)
+    return idb.transaction(IDBBookReaderConfigName, mode).objectStore(IDBBookReaderConfigName)
   }
 
   /** 通过配置名称获取配置对象

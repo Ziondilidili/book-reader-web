@@ -17,6 +17,7 @@ const IDBBookReaderConfigPredefineValue:{
 export const IDB = {
   BookReader: {
     name: "BookReader",
+    version: 1,
     Book: {
       name: "Book",
       pkey: "name",

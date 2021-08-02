@@ -1,26 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Book } from '../../app/entity/book';
 import { Chapter } from '../../app/entity/chapter';
+import { Config } from '../../app/entity/config';
 import { BookService } from '../../app/services/book.service';
+import { ConfigService } from '../../app/services/config.service';
 
 @Component({
   selector: 'book-reader-book-reader-main',
   templateUrl: './book-reader-main.component.html',
   styleUrls: ['./book-reader-main.component.css']
 })
-export class BookReaderMainComponent implements OnInit {
+export class BookReaderMainComponent implements OnInit,OnDestroy {
   chapter!:Chapter
   book!:Book
   operable:boolean = false
+
+  // observable config
+  bgColor?:Config
+  // subscription list
+  subscriptionList:Subscription[] = []
+
   constructor(
     private bookService:BookService,
     private activatedRoute:ActivatedRoute,
-    private router:Router
+    private router:Router,
+    private configService:ConfigService,
   ) { }
-
   ngOnInit(): void {
     this.loadChapter()
+    this.observeStyleConfig()
+  }
+  ngOnDestroy(): void {
+    this.subscriptionList.forEach(subscription=>subscription.unsubscribe())
+  }
+  // 观察样式配置
+  private async observeStyleConfig(){
+    const bgColorSubscription = (await this.configService.getObservableConfig("content.bgColor")).subscribe(config=>{
+      this.bgColor = config
+    })
+    this.subscriptionList.push(bgColorSubscription)
   }
 
   async onContentLayerClosed(chapter:Chapter){

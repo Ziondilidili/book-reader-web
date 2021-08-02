@@ -2,6 +2,7 @@
 <book-reader-book-reader-content-layer
     class="content-layer" 
     [chapter]="chapter"
+    [style.background-color]="bgColor?.value"
     (close)="onContentLayerClosed($event)"
     (toggleOperability)="toggleOperability()"
     (switchPrevChapter)="onSwitchPrevChapter()"

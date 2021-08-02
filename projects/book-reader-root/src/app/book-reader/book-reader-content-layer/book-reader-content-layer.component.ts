@@ -1,8 +1,7 @@
-import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Host, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Chapter } from '../../app/entity/chapter';
 import { IDB } from "projects/book-reader-root/src/environments/environment"
 import { ConfigService } from '../../app/services/config.service';
-import { Config } from '../../app/entity/config';
 import { of, Subscription } from 'rxjs';
 import { concatAll, map } from "rxjs/operators"
 
@@ -15,7 +14,7 @@ const contentConfigNameStyleNameMap: {
   ["content.fontFamily"]: "font-family",
   ["content.textIndent.em"]: "text-indent.em",
   ["content.fontColor"]: "color",
-  ["content.bgColor"]: "background-color",
+  // ["content.bgColor"]: "background-color",
   ["content.lineHeight.em"]:"line-height.em"
 }
 
@@ -52,13 +51,14 @@ export class BookReaderContentLayerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscribeStyleConfig()
   }
+  @Host()
   // 订阅获取相关样式配置信息
   subscribeStyleConfig() {
     // 正文配置名称列表
     const contentConfigNameList = [
       "content.fontSize.px",
       "content.fontColor",
-      "content.bgColor",
+      // "content.bgColor",
       "content.fontWeight",
       "content.fontFamily",
       "content.textIndent.em",

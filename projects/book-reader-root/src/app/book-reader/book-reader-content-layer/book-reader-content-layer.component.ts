@@ -15,7 +15,12 @@ const contentConfigNameStyleNameMap: {
   ["content.textIndent.em"]: "text-indent.em",
   ["content.fontColor"]: "color",
   // ["content.bgColor"]: "background-color",
-  ["content.lineHeight.em"]:"line-height.em"
+  ["content.lineHeight.em"]: "line-height.em"
+}
+const titleConfigNameStyleNameMap: {
+  [configName: string]: string
+} = {
+  ["title.color"]: "color"
 }
 
 @Component({
@@ -44,6 +49,10 @@ export class BookReaderContentLayerComponent implements OnInit, OnDestroy {
   contentStyleObject: {
     [klass: string]: any;
   } = {}
+  // 标题样式对象
+  titleStyleObject: {
+    [klass: string]: any;
+  } = {}
 
   constructor(
     private configService: ConfigService
@@ -51,7 +60,6 @@ export class BookReaderContentLayerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscribeStyleConfig()
   }
-  @Host()
   // 订阅获取相关样式配置信息
   subscribeStyleConfig() {
     // 正文配置名称列表
@@ -72,6 +80,21 @@ export class BookReaderContentLayerComponent implements OnInit, OnDestroy {
         // this.styleConfigMap.set(config.name, config)
         const styleName = contentConfigNameStyleNameMap[config.name]
         this.contentStyleObject[styleName] = config.value
+      })
+      this.styleConfigSubscriptionList.push(subscription)
+    })
+    // 标题配置名称列表
+    const titleConfigNameList = [
+      "title.color"
+    ]
+    of(...titleConfigNameList).pipe(
+      map(configName => this.configService.getObservableConfig(configName)),
+      concatAll()
+    ).subscribe(configSubject=>{
+      const subscription = configSubject.subscribe(config => {
+        // this.styleConfigMap.set(config.name, config)
+        const styleName = titleConfigNameStyleNameMap[config.name]
+        this.titleStyleObject[styleName] = config.value
       })
       this.styleConfigSubscriptionList.push(subscription)
     })

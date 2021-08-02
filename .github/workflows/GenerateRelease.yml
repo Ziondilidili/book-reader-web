@@ -22,6 +22,11 @@ jobs:
           cp -r ./dist/book-reader-root book-reader-web
           zip -r book-reader-web.zip book-reader-web
           tar -zcvf book-reader-web.tar.gz book-reader-web
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./book-reader-web
       - name: Generate PreRelease
         id: create_release
         uses: actions/create-release@v1

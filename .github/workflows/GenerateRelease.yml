@@ -28,7 +28,8 @@ jobs:
           publish_dir: ./dist/book-reader-root/browser
           destination_dir: ./book-reader
           cname: www.simplessor.ltd
-          publish_branch: gh-pages
+          external_repository: simplessor/simplessor.github.io
+          publish_branch: main
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: ${{ github.event.head_commit.message }}

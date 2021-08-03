@@ -22,7 +22,7 @@ jobs:
       - name: Install Deps
         run: npm install
       - name: Build Project
-        run: npx ng build book-reader-root --prod --deploy-url=/book-reader/
+        run: npx ng build book-reader-root
       - name: Package Assets
         run: |
           zip -r /tmp/book-reader-web.zip ./dist/book-reader-root/browser

@@ -5,7 +5,7 @@ on:
       - 'v*'
 jobs:
   GenerateRelease:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Setup NodeJS@v14
@@ -16,17 +16,22 @@ jobs:
       - name: Install Deps
         run: npm install
       - name: Build Project
-        run: npx ng build book-reader-root --prod
+        run: npx ng build book-reader-root
       - name: Package Assets
         run: |
-          cp -r ./dist/book-reader-root book-reader-web
-          zip -r book-reader-web.zip book-reader-web
-          tar -zcvf book-reader-web.tar.gz book-reader-web
-      - name: Deploy
+          zip -r /tmp/book-reader-web.zip ./dist/book-reader-root/browser
+          tar -zcvf /tmp/book-reader-web.tar.gz ./dist/book-reader-root/browser
+      - name: Deploy GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./book-reader-web
+          publish_dir: ./dist/book-reader-root/browser
+          destination_dir:
+          cname: www.simplessor.ltd
+          publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: github-actions[bot] auto commit
       - name: Generate PreRelease
         id: create_release
         uses: actions/create-release@v1
@@ -45,7 +50,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./book-reader-web.tar.gz
+          asset_path: /tmp/book-reader-web.tar.gz
           asset_name: book-reader-web.tar.gz
           asset_content_type: application/zip
       - name: Upload Release Asset [.zip]
@@ -55,6 +60,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./book-reader-web.zip
+          asset_path: /tmp/book-reader-web.zip
           asset_name: book-reader-web.zip
           asset_content_type: application/zip

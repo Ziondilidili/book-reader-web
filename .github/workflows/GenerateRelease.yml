@@ -48,16 +48,16 @@ jobs:
       #     build_dir: ./dist/book-reader-root/browser
       #     fqdn: www.simplessor.ltd
       #   env:
-      #     GH_PAT: ${{ secrets.HOMEPAGE_DEPLOY_KEY }}
+      #     GH_PAT: ${{secrets.HOMEPAGE_DEPLOY_KEY}}
       - name: Deploy GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.HOMEPAGE_DEPLOY_KEY }}
+          deploy_key: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist/book-reader-root/browser
           destination_dir:
           cname: www.simplessor.ltd
-          external_repository: simplessor/simplessor.github.io
-          publish_branch: main
+          # external_repository: simplessor/simplessor.github.io
+          publish_branch: gh-pages
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: github-actions[bot] auto commit

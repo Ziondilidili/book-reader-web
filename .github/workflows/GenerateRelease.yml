@@ -8,6 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          repository: simplessor/simplessor.github.io
+          path: simplessor.github.io
+          token: ${{ secrets.HOMEPAGE_DEPLOY_KEY }}
       - name: Setup NodeJS@v14
         uses: actions/setup-node@v2
         with:
@@ -21,19 +26,28 @@ jobs:
         run: |
           zip -r /tmp/book-reader-web.zip ./dist/book-reader-root/browser
           tar -zcvf /tmp/book-reader-web.tar.gz ./dist/book-reader-root/browser
-      - name: GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v2.5.0
-        if: success()
-        with:
-          # domain: www.simplessor.ltd
-          repo: simplessor/simplessor.github.io
-          target_branch: main
-          keep_history: false
-          allow_empty_commit: true
-          build_dir: ./dist/book-reader-root/browser
-          fqdn: www.simplessor.ltd
-        env:
-          GH_PAT: ${{ secrets.HOMEPAGE_DEPLOY_KEY }}
+      - name: Manual Commit GhPages
+        run: |
+          cp -r ./dist/book-reader-root/browser ./simplessor.github.io/
+          cd simplessor.github.io
+          git config user.name simplessor
+          git config user.email simplessor@qq.com
+          git add .
+          git commit -m "auto generated with actions"
+          git push
+      # - name: GitHub Pages
+      #   uses: crazy-max/ghaction-github-pages@v2.5.0
+      #   if: success()
+      #   with:
+      #     # domain: www.simplessor.ltd
+      #     repo: simplessor/simplessor.github.io
+      #     target_branch: main
+      #     keep_history: false
+      #     allow_empty_commit: true
+      #     build_dir: ./dist/book-reader-root/browser
+      #     fqdn: www.simplessor.ltd
+      #   env:
+      #     GH_PAT: ${{ secrets.HOMEPAGE_DEPLOY_KEY }}
       # - name: Deploy
       #   uses: peaceiris/actions-gh-pages@v3
       #   with:

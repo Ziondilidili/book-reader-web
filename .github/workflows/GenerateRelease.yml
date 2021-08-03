@@ -24,8 +24,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          personal_token: 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
+          deploy_key: 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
           publish_dir: ./dist/book-reader-root/browser
           destination_dir: ./book-reader
           cname: www.simplessor.ltd

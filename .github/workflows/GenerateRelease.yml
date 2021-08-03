@@ -21,18 +21,31 @@ jobs:
         run: |
           zip -r /tmp/book-reader-web.zip ./dist/book-reader-root/browser
           tar -zcvf /tmp/book-reader-web.tar.gz ./dist/book-reader-root/browser
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v2.5.0
+        if: success()
         with:
-          deploy_key: ${{ secrets.HOMEPAGE_DEPLOY_KEY }}
-          publish_dir: ./dist/book-reader-root/browser
-          destination_dir: ./book-reader
-          cname: www.simplessor.ltd
-          external_repository: simplessor/simplessor.github.io
-          publish_branch: main
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: github-actions[bot] auto commit
+          # domain: www.simplessor.ltd
+          repo: simplessor.github.io
+          target_branch: main
+          keep_history: false
+          allow_empty_commit: true
+          build_dir: ./dist/book-reader-root/browser
+          fqdn: www.simplessor.ltd
+        env:
+          GH_PAT: ${{ secrets.HOMEPAGE_DEPLOY_KEY }}
+      # - name: Deploy
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     deploy_key: ${{ secrets.HOMEPAGE_DEPLOY_KEY }}
+      #     publish_dir: ./dist/book-reader-root/browser
+      #     destination_dir: ./book-reader
+      #     cname: www.simplessor.ltd
+      #     external_repository: simplessor/simplessor.github.io
+      #     publish_branch: main
+      #     user_name: 'github-actions[bot]'
+      #     user_email: 'github-actions[bot]@users.noreply.github.com'
+      #     commit_message: github-actions[bot] auto commit
       - name: Generate PreRelease
         id: create_release
         uses: actions/create-release@v1

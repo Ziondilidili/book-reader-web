@@ -24,8 +24,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          personal_token: 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
+          deploy_key: ${{ secrets.HOMEPAGE_DEPLOY_KEY }}
           publish_dir: ./dist/book-reader-root/browser
           destination_dir: ./book-reader
           cname: www.simplessor.ltd
@@ -33,7 +32,7 @@ jobs:
           publish_branch: main
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: ${{ github.event.head_commit.message }}
+          commit_message: github-actions[bot] auto commit
       - name: Generate PreRelease
         id: create_release
         uses: actions/create-release@v1

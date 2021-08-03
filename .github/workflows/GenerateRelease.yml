@@ -26,7 +26,7 @@ jobs:
         if: success()
         with:
           # domain: www.simplessor.ltd
-          repo: simplessor.github.io
+          repo: simplessor/simplessor.github.io
           target_branch: main
           keep_history: false
           allow_empty_commit: true

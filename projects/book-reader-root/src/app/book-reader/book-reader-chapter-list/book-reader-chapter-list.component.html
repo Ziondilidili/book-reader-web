@@ -1,11 +1,13 @@
-<mat-toolbar class="toolbar">
-    <mat-icon class="backbtn" [routerLink]="['..']">arrow_left</mat-icon>
+<mat-toolbar class="toolbar" color="primary">
+    <button mat-icon-button class="backbtn" [routerLink]="['..']">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
     <h4 class="title">{{book?.name}}</h4>
 </mat-toolbar>
-<cdk-virtual-scroll-viewport [itemSize]="chapterNameItemSize" class="chapter-list" (cdkObserveContent)="scrollCurrentChapter()">
+<cdk-virtual-scroll-viewport class="chapter-list" [itemSize]="chapterNameItemSize" (cdkObserveContent)="scrollCurrentChapter()">
     <mat-list>
         <ng-container *cdkVirtualFor="let chapterName of book?.chapterNameList;index as index">
-            <mat-list-item class="chapter-item" [class.chapter-current]="book?.chapterIndex === index" (click)="navigateChapter(index)">
+            <mat-list-item class="chapter-item" [disabled]="book?.chapterIndex === index" (click)="navigateChapter(index)">
                 {{chapterName}}
             </mat-list-item>
         </ng-container>

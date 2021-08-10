@@ -1,37 +1,19 @@
-::-webkit-scrollbar{
-    display:none;
-}
-.chapter-list{
-    width: 100%;
-    height: 94%;
-    top: 6%;
-    margin-top: 0;
-    padding-top: 0;
-    overflow-y:auto
-}
-.chapter-item{
-    height: 20px;
-}
-.chapter-current{
-    background-color: royalblue;
+:host{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 .toolbar{
     display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 5%;
-    padding-left: 0%;
-}
-.toolbar .backbtn{
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 .toolbar .title{
-    flex: 8;
     text-overflow: ellipsis;
     overflow-x: hidden;
+}
+.chapter-list{
+    flex-grow: 1;
+}
+.chapter-item{
+    height: 48px;
 }

@@ -9,7 +9,7 @@ export const IDBBookReaderConfigPredefineValue:{
   ["content.bgColor"]:"white",
   ["content.lineHeight.em"]:1.5,
   ["content.chapterSwitchRegionPercent"]:0.1,
+  ["content.userSelect"]: "none",
   ["title.color"]: "green",
   ["title.fontSize.px"]: 45,
-  ["setting.switchChapterWithClick"]: true,
 }

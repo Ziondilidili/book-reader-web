@@ -15,7 +15,8 @@ const contentConfigNameStyleNameMap: {
   ["content.textIndent.em"]: "text-indent.em",
   ["content.fontColor"]: "color",
   // ["content.bgColor"]: "background-color",
-  ["content.lineHeight.em"]: "line-height.em"
+  ["content.lineHeight.em"]: "line-height.em",
+  ["content.userSelect"]: "user-select"
 }
 const titleConfigNameStyleNameMap: {
   [configName: string]: string
@@ -71,7 +72,8 @@ export class BookReaderContentLayerComponent implements OnInit, OnDestroy {
       "content.fontWeight",
       "content.fontFamily",
       "content.textIndent.em",
-      "content.lineHeight.em"
+      "content.lineHeight.em",
+      "content.userSelect",
     ]
     of(...contentConfigNameList).pipe(
       map(configName => this.configService.getObservableConfig(configName)),

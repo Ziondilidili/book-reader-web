@@ -1,0 +1,14 @@
+:host{
+  display: flex;
+  flex-direction: column;
+}
+.back-btn{
+  width: 5%;
+}
+.touchable{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5%;
+}

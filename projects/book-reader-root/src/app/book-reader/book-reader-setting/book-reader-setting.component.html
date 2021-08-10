@@ -1,1 +1,15 @@
-<p>book-reader-setting works!</p>
+<!-- 标题 -->
+<mat-toolbar>
+  <button mat-button class="back-btn" (click)="routerBackPrevPage()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>设置</span>
+</mat-toolbar>
+<!-- 文本内容可选择性 -->
+<span class="config-item touchable">
+  <span>文本内容可选择</span>
+  <mat-slide-toggle
+    [checked]="touchableConfig?.value === 'text'"
+    (change)="updateTouchable($event.checked?'text':'none')"
+  ></mat-slide-toggle>
+</span>

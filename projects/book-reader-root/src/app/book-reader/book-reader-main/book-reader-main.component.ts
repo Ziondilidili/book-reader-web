@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Book } from '../../app/entity/book';
@@ -6,6 +7,7 @@ import { Chapter } from '../../app/entity/chapter';
 import { Config } from '../../app/entity/config';
 import { BookService } from '../../app/services/book.service';
 import { ConfigService } from '../../app/services/config.service';
+import { BookReaderActionLayerComponent } from '../book-reader-action-layer/book-reader-action-layer.component';
 
 @Component({
   selector: 'book-reader-book-reader-main',
@@ -27,6 +29,7 @@ export class BookReaderMainComponent implements OnInit,OnDestroy {
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private configService:ConfigService,
+    private bottomSheet:MatBottomSheet
   ) { }
   ngOnInit(): void {
     this.loadChapter()
@@ -90,6 +93,9 @@ export class BookReaderMainComponent implements OnInit,OnDestroy {
    * 控制可操作性
    */
    toggleOperability(){
-    this.operable = !this.operable
+    // this.operable = !this.operable
+    this.bottomSheet.open(BookReaderActionLayerComponent,{
+      data:this.book.name
+    })
   }
 }

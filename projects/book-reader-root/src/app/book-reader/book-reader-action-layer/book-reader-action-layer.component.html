@@ -1,27 +1,16 @@
-<!-- 遮罩层 -->
-<span class="cover">
-    <!-- 顶栏 -->
-    <span role="header-bar" class="header-bar">
-        <mat-icon routerLink="/list">arrow_back_ios</mat-icon>
-        <span class="book-name">
-            {{book?.name}}
-        </span>
-    </span>
-    <!-- 可取消遮罩层区域 -->
-    <span class="cancel-cover" (click)="onCancelClick()"></span>
-    <!-- 底栏 -->
-    <span class="footer-bar" role="footer-bar">
-        <span class="footer-item" routerLink="chapter-list">
-            <mat-icon>menu</mat-icon>
-            <span>目录</span>
-        </span>
-        <span class="footer-item" (click)="openStyleConfig()">
-            <mat-icon>style</mat-icon>
-            <span>界面</span>
-        </span>
-        <span class="footer-item" routerLink="../setting">
-            <mat-icon>settings</mat-icon>
-            <span>设置</span>
-        </span>
-    </span>
+<span class="item" routerLink="/" (click)="ref.dismiss()">
+    <mat-icon>home</mat-icon>
+    <span>主页</span>
+</span>
+<span class="item" [routerLink]="['reader',bookName,'chapter-list']" (click)="ref.dismiss()">
+    <mat-icon>menu</mat-icon>
+    <span>目录</span>
+</span>
+<span class="item" (click)="openStyleConfig()">
+    <mat-icon>style</mat-icon>
+    <span>界面</span>
+</span>
+<span class="item" routerLink="/reader/setting" (click)="ref.dismiss()">
+    <mat-icon>settings</mat-icon>
+    <span>设置</span>
 </span>

@@ -1,6 +1,6 @@
 {
-  "name": "book-reader-root",
-  "short_name": "book-reader-root",
+  "name": "小说阅读器",
+  "short_name": "reader",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

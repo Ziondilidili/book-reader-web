@@ -24,7 +24,7 @@ jobs:
       - name: Deploy GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_token: ${{ secrets.ACTION_DEPLOY_KEY }}
+          deploy_key: ${{ secrets.ACTION_DEPLOY_KEY }}
           publish_dir: ./dist/book-reader-root/browser
           destination_dir: ./reader
           cname: |

@@ -29,7 +29,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./dist/ghpages
+          publish_dir: ./dist/book-reader-root/browser/
           external_repository: simplessor/simplessor.github.io
           publish_branch: gh-pages
           destination_dir: reader

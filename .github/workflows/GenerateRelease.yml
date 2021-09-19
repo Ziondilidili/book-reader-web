@@ -36,6 +36,7 @@ jobs:
           keep_files: true
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: ${{ github.event.head_commit.message }}
       - name: Generate PreRelease
         id: create_release
         uses: actions/create-release@v1
